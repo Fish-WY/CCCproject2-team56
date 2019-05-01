@@ -31,8 +31,8 @@ def showMytweets():
 
 
 def Tsearch(query = 'china',language = "en"):
-    # The keyword you are looking for :  query = "sports"
-    # The language code（ISO 639-1）   language = "en"
+    # The keyword you are looking for   query = "sports"
+    # The language code (ISO 639-1)     language = "en"
     results = api.search(q=query, lang=language)
 
 
