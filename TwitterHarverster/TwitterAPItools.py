@@ -17,32 +17,28 @@ api = tweepy.API( auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True )
 
 # connect to Twitter API
 # Create authentication objects
-# 创建认证对象
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-# 设置你的access token和access secret
+# set access token & access secret
 auth.set_access_token(access_token_key, access_token_secret)
-# 传入auth参数，创建API对象
+# Pass in the auth parameter to create the API object
 api = tweepy.API(auth)
 
 
 def showMytweets():
     public_tweets = api.home_timeline()
-    # 遍历所拉取的全部微博
     for tweet in public_tweets:
-       # 打印存在微博对象中的text字段
        print(tweet.text)
 
 
 def Tsearch(query = 'china',language = "en"):
-    # 你想查找的关键字  query = "sports"
-    # 语言代码（遵循ISO 639-1标准）   language = "en"
-    # 使用上面的参数，调用user_timeline函数
+    # The keyword you are looking for :  query = "sports"
+    # The language code（ISO 639-1）   language = "en"
     results = api.search(q=query, lang=language)
 
 
-    # 遍历所拉取的全部twitter
+    # get all twitters
     for tweet in results:
-       # 打印存在微博对象中的text字段
+       # get raw text part
        print(tweet.user.screen_name,"Tweeted:",tweet.text)
     return results
 
