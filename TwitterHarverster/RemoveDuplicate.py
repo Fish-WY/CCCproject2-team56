@@ -1,11 +1,5 @@
 from cloudant.client import CouchDB
-from pprint import pprint
-import time, tweepy, sys
-from time import sleep
-from tweepy.streaming import StreamListener
-from tweepy import Stream
-import json
-from TwitterProcessor import *
+from TwitterHarverster.TwitterProcessor import *
 #import CouchDBconnecter
 
 
