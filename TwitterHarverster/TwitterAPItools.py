@@ -117,6 +117,7 @@ def processData(data):
     tmp['includePhoto'] = 'photo' in medias
 
     # check retweet
+    # todo
 
 
     # vader sentiment analysis
@@ -138,9 +139,10 @@ def processData(data):
     #pprint(tmp)
 
     # check hashtags
+    # todo
     tmp['hashtags'] = []
     for tagentities in raw['entities']['hashtags']:
-        pass
+        tmp['hashtags'].append(tagentities['text'])
     pushTweet(tmp,'car')
 
 class listener(StreamListener):
