@@ -15,7 +15,7 @@ count = 0
 for doc in client['test']:
     try:
         if doc['truncated']:
-            print(doc['text'])
+            print(doc['extended_tweet']['full_text'])
             for word in doc['extended_tweet']['full_text'].split():
                 if word.lower() in carBrandLower:
                     signal = True
@@ -25,7 +25,7 @@ for doc in client['test']:
                     break
         else:
             print(doc['text'])
-            for word in doc['extended_tweet']['full_text'].split():
+            for word in doc['text'].split():
                 if word.lower() in carBrandLower:
                     signal = True
                     count += 1
