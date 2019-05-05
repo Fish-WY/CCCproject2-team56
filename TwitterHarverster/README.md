@@ -1,6 +1,7 @@
-# Installation and usage of a CouchDB cluster
+# Introduction of Twitter Harversters
 ## run.py
 start the harverster
+
 start a pipe first, this will be remove after reconsitution the couchDB
 ```
 ssh -fNg -L 5985:172.17.0.2:5984 -i HT.pem ubuntu@45.113.235.143
