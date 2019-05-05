@@ -87,17 +87,9 @@ def processData(data):
 
     raw = json.loads(data)
     #pprint(raw)
-    print(raw['text'])
+
     tmp = dict(carbrands = [])
-    # check carbrands in rawtext
-    signal = False
-    for word in raw['text'].split():
-        if word.lower() in carBrandLower:
-            signal = True
-            tmp['carbrands'].append(word.lower())
-    if not signal:
-        print('no car brand inside')
-        return
+
 
     # get userful info
     tmp['_id'] = raw['id_str']
@@ -105,9 +97,22 @@ def processData(data):
     tmp['geo'] = raw['geo']
     tmp['coordinates'] = raw['coordinates']
     tmp['place'] = raw['place']
-    tmp['text'] = raw['text']
     tmp['retweeted'] = raw['retweeted']
     tmp['hashtags'] = raw['entities']['hashtags']['text']
+    if raw['truncated']:
+        tmp['text']= raw['extended_tweet']['full_text']
+    else:
+        tmp['text'] = raw['text']
+
+    # check carbrands in rawtext
+    signal = False
+    for word in tmp['text'].split():
+        if word.lower() in carBrandLower:
+            signal = True
+            tmp['carbrands'].append(word.lower())
+    if not signal:
+        print('no car brand inside')
+        return
 
     # check media
     medias = set()
@@ -139,10 +144,14 @@ def processData(data):
     #pprint(tmp)
 
     # check hashtags
-    # todo
     tmp['hashtags'] = []
-    for tagentities in raw['entities']['hashtags']:
-        tmp['hashtags'].append(tagentities['text'])
+    if raw['truncated']:
+        for tagentities in raw['extended_tweet']['entities']['hashtags']:
+            tmp['hashtags'].append(tagentities['text'])
+    else:
+        for tagentities in raw['entities']['hashtags']:
+            tmp['hashtags'].append(tagentities['text'])
+
     pushTweet(tmp,'car')
 
 class listener(StreamListener):

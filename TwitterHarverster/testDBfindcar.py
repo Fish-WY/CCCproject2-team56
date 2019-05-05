@@ -13,17 +13,27 @@ from pprint import pprint
 
 count = 0
 for doc in client['test']:
-    print(doc['text'])
-    for word in doc['text'].split():
-        try:
-            if word.lower() in carBrandLower:
-                signal = True
-                count += 1
-                print(count)
-                my_document = client['trash'].create_document(doc)
-                break
-        except:
-            pass
+    try:
+        if doc['truncated']:
+            print(doc['text'])
+            for word in doc['extended_tweet']['full_text'].split():
+                if word.lower() in carBrandLower:
+                    signal = True
+                    count += 1
+                    print(count)
+                    my_document = client['trash'].create_document(doc)
+                    break
+        else:
+            print(doc['text'])
+            for word in doc['extended_tweet']['full_text'].split():
+                if word.lower() in carBrandLower:
+                    signal = True
+                    count += 1
+                    print(count)
+                    my_document = client['trash'].create_document(doc)
+                    break
+    except:
+        pass
 print('-'*35)
 print('count = ',count)
 
