@@ -7,6 +7,7 @@ from APIconfig import *
 from pprint import pprint
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from geotext import GeoText
+import string
 
 analyzer = SentimentIntensityAnalyzer()
 
@@ -42,8 +43,11 @@ def testTweepyStatus(ts):
         print(a.id_str)
         print(a.parse)
         pprint(a.entities)
-
-
+'''
+normal API return an object #processTweet
+but stream API return a string  #processData
+so there is a bit different in there
+'''
 def processTweet(tweet):
     # get raw text part
     # print(tweet.user.screen_name,"Tweeted:",tweet.text)
@@ -53,9 +57,10 @@ def processTweet(tweet):
         geo = tweet.geo,
         coordinates = tweet.coordinates,
         place = tweet.palce,
-
-
     )
+
+def stripTweetByCar(tweet):
+    pass
 
 def showMytweets():
     public_tweets = api.home_timeline()
@@ -63,38 +68,56 @@ def showMytweets():
        print(tweet.text)
 
 
-def Tsearch(query = 'a',language = "en",geo = geoNode['sydney']):
-    # The keyword you are looking for   query = "sports"
-    # The language code (ISO 639-1)     language = "en"
-    #results = api.search(q=query, lang=language,geocode=geo)
-    results = api.search(geocode=geo)
+def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car'):
+    # Parameters reference
+    # https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html
+    results = api.search(geocode=geo,lang = lang,)
+    for r in results:
+        print(r.text)
 
-    # new_tweets = api.search(
-    #     q=query,
-    #     geocode=geo,
-    #     count=searchLimits)
-
-    testTweepyStatus(results)
     return results
 
 def Tgeo(geo = ''):
     results = api.reverse_geocode(granularity='city',)
     testTweepyStatus(results)
 
+# process StreamListener data by carbrand
+# extract useful info and compute sentiment parameter
 def processData(data):
-    # extract useful info and compute sentiment parameter
+
     raw = json.loads(data)
     #pprint(raw)
-    tmp = dict(
-        _id = raw['id_str'],
-        id = raw['id'],
-        geo = raw['geo'],
-        coordinates = raw['coordinates'],
-        place = raw['place'],
-        text = raw['text'],
-        retweeted = raw['retweeted'],
-        hashtags = raw['entities']['hashtags']
-    )
+    print(raw['text'])
+    tmp = dict(carbrands = [])
+    # check carbrands in rawtext
+    signal = False
+    for word in raw['text'].split():
+        if word.lower() in carBrandLower:
+            signal = True
+            tmp['carbrands'].append(word.lower())
+    if not signal:
+        print('no car brand inside')
+        return
+
+    # get userful info
+    tmp['_id'] = raw['id_str']
+    tmp['id'] = raw['id']
+    tmp['geo'] = raw['geo']
+    tmp['coordinates'] = raw['coordinates']
+    tmp['place'] = raw['place']
+    tmp['text'] = raw['text']
+    tmp['retweeted'] = raw['retweeted']
+    tmp['hashtags'] = raw['entities']['hashtags']['text']
+
+    # check media
+    medias = set()
+    for i in raw['extended_entities']['media']:
+        medias.add(i['type'])
+    tmp['includeMedia'] = 'video' in medias
+    tmp['includePhoto'] = 'photo' in medias
+
+    # check retweet
+
 
     # vader sentiment analysis
     # compound is the score [-1,1]
@@ -105,14 +128,20 @@ def processData(data):
     else : tmp['sentiment'] = 'neutral'
 
     # extract cities from raw text
-    places = GeoText(raw['text'])
-    tmp['mentioned'] = dict(
-        cities = places.cities,
-        counties = places.country_mentions
+    places = GeoText(raw['place']['full_name'])
+    if len(places.cities) > 1:
+        print('cities > 1 error!!!')
+    tmp['where'] = dict(
+        city = places.cities[0]
+        #counties = places.country_mentions
     )
     #pprint(tmp)
 
-    pushDic(tmp)
+    # check hashtags
+    tmp['hashtags'] = []
+    for tagentities in raw['entities']['hashtags']:
+        pass
+    pushTweet(tmp,'car')
 
 class listener(StreamListener):
 
@@ -133,7 +162,7 @@ class listener(StreamListener):
         sleep(100)
         return
 
-def beginStream():
+def beginStream(dbname,query = carBrand):
     twitterStream = Stream(auth, listener())
     #track=["sports"]
 
@@ -149,7 +178,14 @@ def getOne():
     return tweets[0]
 
 
-
+if __name__ == '__main__':
+    query = carBrand
+    lang = "en"
+    geo = geoNode['sydney']
+    dbname = 'car'
+    results = api.search(geocode=geo, lang=lang,fromDate = '201712220000',toDate = '201812220000' )
+    for r in results:
+        pprint(r)
 
 
 

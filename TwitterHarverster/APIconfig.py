@@ -33,6 +33,33 @@ geoBlock = dict(
     aus=[105.033007, -42.384930, 153.844606, -10.466363]
 )
 
+carBrand = ['Abarth', 'Acura', 'Alfa Romeo', 'Alpina', 'Aston Martin','Audi',
+'BMW','Bentley',
+'Chevrolet', 'Chrysler', 'Citroen', 
+'Daihatsu', 'Daewoo', 'Dodge'
+'Ferrari', 'Fiat', 'Ford', 'Foton', 
+'Great Wall', 
+'Haval', 'Holden', 'HSV', 'Honda', 'Hyundai', 
+'Infiniti', 'Isuzu',
+'Jaguar','Jeep',
+'Kia', 
+'Lamborghini', 'Land Rover', 'LDV', 'Lexus', 'Lotus',
+'Mazda', 'Mercedes-Benz', 'Mitsubishi',  'Mahindra', 'Maserati', 'Mclaren','MG', 'MINI',
+'Nissan', 
+'Peugeot', 'Porsche', 
+'RAM', 'Renault', 'Rolls-Royce',
+'Subaru','SKODA', 'SsangYong', 'Subaru', 'Suzuki',
+'Tata', 'Tesla', 'Toyota'
+ 'Volkswagen', 'Volvo']
+
+carBrandLower = {'rolls-royce', 'jeep', 'foton', 'maserati', 'mahindra', 'acura', 'ssangyong',
+                 'tata', 'hyundai', 'lotus', 'mitsubishi', 'alfa romeo', 'bmw', 'ldv', 'citroen',
+                 'aston martin', 'abarth', 'isuzu', 'kia', 'honda', 'bentley', 'tesla', 'subaru',
+                 'land rover', 'daewoo', 'holden', 'lexus', 'audi', 'mini', 'hsv', 'lamborghini',
+                 'ford', 'mazda', 'renault', 'ram', 'toyotavolkswagen', 'great wall', 'daihatsu',
+                 'skoda', 'volvo', 'alpina', 'nissan', 'chrysler', 'infiniti', 'porsche', 'dodgeferrari',
+                 'peugeot', 'mercedes-benz', 'suzuki', 'mg', 'chevrolet', 'mclaren', 'jaguar', 'fiat', 'haval'}
+
 machine1 = dict(
     index=0,
     consumer_key='zzOBqCC46V0zrYZPdozEts4p0',
@@ -65,3 +92,4 @@ machine4 = dict(
     access_token='988044719287549954-LByCW5hafHXKYhnCY6mpGbLoVFNNJ9T',
     access_secret='FGXlkhzOUo7yPWI8zNqKQCVz0PKdQNZkQqcaUAkrY8tZS'
 )
+
