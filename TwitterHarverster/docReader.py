@@ -11,7 +11,7 @@ creatDB('trash')
 for city in ausCities:
     fname = city + '2015.json'
     try:
-        f = open(fname,'r',encoding='UTF-8')
+        f = open('~/historytweets/'+fname,'r',encoding='UTF-8')
 
         f.readline()
 
