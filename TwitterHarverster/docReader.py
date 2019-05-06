@@ -29,11 +29,14 @@ for year in ['2015','2016']:
                 total += 1  # conunt total twitters
                 #pprint(twi)
                 processData(twi)
+
+            f.close()
         except IOError as e:
             print(e)
             print('docReader error')
             continue
         finally:
-            f.close()
+            pass
+
 print('total tweets',total)
 
