@@ -14,7 +14,7 @@ for year in ['2015','2016']:
         print('total tweets',total)
         fname = city + year + '.json'
         try:
-            f = open('./historytweets/'+fname,'r',encoding='UTF-8')
+            f = open('/data/'+fname,'r',encoding='UTF-8')
 
             print(f.readline())
 
