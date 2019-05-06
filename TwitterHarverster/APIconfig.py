@@ -32,6 +32,7 @@ geoBlock = dict(
     vic=[140.96, -39.18, 144.04, -33.98, 144.04, -39.16, 149.98, -35.91],
     aus=[105.033007, -42.384930, 153.844606, -10.466363]
 )
+ausCities = ['adelaide','brisbane','canberra','hobart','melbourne','perth','sydney']
 
 carBrand = ['Abarth', 'Acura', 'Alfa Romeo', 'Alpina', 'Aston Martin','Audi',
 'BMW','Bentley',
@@ -44,7 +45,7 @@ carBrand = ['Abarth', 'Acura', 'Alfa Romeo', 'Alpina', 'Aston Martin','Audi',
 'Jaguar','Jeep',
 'Kia', 
 'Lamborghini', 'Land Rover', 'LDV', 'Lexus', 'Lotus',
-'Mazda', 'Mercedes-Benz', 'Mitsubishi',  'Mahindra', 'Maserati', 'Mclaren','MG', 'MINI',
+'Mazda', 'Mercedes','Benz', 'Mitsubishi',  'Mahindra', 'Maserati', 'Mclaren','MG', 'MINI',
 'Nissan', 
 'Peugeot', 'Porsche', 
 'RAM', 'Renault', 'Rolls-Royce',
@@ -58,7 +59,7 @@ carBrandLower = {'rolls-royce', 'jeep', 'foton', 'maserati', 'mahindra', 'acura'
                  'land rover', 'daewoo', 'holden', 'lexus', 'audi', 'mini', 'hsv', 'lamborghini',
                  'ford', 'mazda', 'renault', 'ram', 'toyotavolkswagen', 'great wall', 'daihatsu',
                  'skoda', 'volvo', 'alpina', 'nissan', 'chrysler', 'infiniti', 'porsche', 'dodgeferrari',
-                 'peugeot', 'mercedes-benz', 'suzuki', 'mg', 'chevrolet', 'mclaren', 'jaguar', 'fiat', 'haval'}
+                 'peugeot', 'mercedes','benz', 'suzuki', 'mg', 'chevrolet', 'mclaren', 'jaguar', 'fiat', 'haval'}
 
 machine1 = dict(
     index=0,

@@ -16,3 +16,5 @@ python3 run.py carbrands trash
 defined python functions for couchDB and Twitter API to be called by run.py
 ## APIconfig.py
 metadata such as carBrands, coordinations ......
+## docReader.py
+read downloaded twitter data from UNIMELB

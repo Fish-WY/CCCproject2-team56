@@ -84,27 +84,30 @@ def Tgeo(geo = ''):
 # process StreamListener data by carbrand
 # extract useful info and compute sentiment parameter
 def processData(data):
+    print(type(data))
+    if isinstance(data,dict):
+        raw = data['doc']
+    else:
+        raw = json.loads(data)
+    pprint(raw)
 
-    raw = json.loads(data)
-    #pprint(raw)
-
-    tmp = dict(carbrands = [])
+    tmp = {}
 
 
     # get userful info
     tmp['_id'] = raw['id_str']
-    tmp['id'] = raw['id']
+    #tmp['id'] = raw['id']
     tmp['geo'] = raw['geo']
     tmp['coordinates'] = raw['coordinates']
     tmp['place'] = raw['place']
     tmp['retweeted'] = raw['retweeted']
-    tmp['hashtags'] = raw['entities']['hashtags']['text']
     if raw['truncated']:
         tmp['text']= raw['extended_tweet']['full_text']
     else:
         tmp['text'] = raw['text']
 
     # check carbrands in rawtext
+    tmp['carbrands'] = []
     signal = False
     for word in tmp['text'].split():
         if word.lower() in carBrandLower:
@@ -115,11 +118,15 @@ def processData(data):
         return
 
     # check media
-    medias = set()
-    for i in raw['extended_entities']['media']:
-        medias.add(i['type'])
-    tmp['includeMedia'] = 'video' in medias
-    tmp['includePhoto'] = 'photo' in medias
+    if 'extended_entities' in raw:
+        medias = set()
+        for i in raw['extended_entities']['media']:
+            medias.add(i['type'])
+        tmp['includeMedia'] = 'video' in medias
+        tmp['includePhoto'] = 'photo' in medias
+    else:
+        tmp['includeMedia'] = False
+        tmp['includePhoto'] = False
 
     # check retweet
     # todo
@@ -134,13 +141,13 @@ def processData(data):
     else : tmp['sentiment'] = 'neutral'
 
     # extract cities from raw text
-    places = GeoText(raw['place']['full_name'])
-    if len(places.cities) > 1:
-        print('cities > 1 error!!!')
-    tmp['where'] = dict(
-        city = places.cities[0]
-        #counties = places.country_mentions
-    )
+    tmp['where'] = {'city':[]}
+    if not raw['place'] == None:
+        places = GeoText(raw['place']['full_name'])
+        if len(places.cities) > 1:
+            print(places.cities)
+            print('cities > 1 error!!!')
+        tmp['where']['city'] = places.cities
     #pprint(tmp)
 
     # check hashtags
@@ -152,7 +159,7 @@ def processData(data):
         for tagentities in raw['entities']['hashtags']:
             tmp['hashtags'].append(tagentities['text'])
 
-    pushTweet(tmp,'car')
+    postTweet(tmp,'trash')
 
 class listener(StreamListener):
 

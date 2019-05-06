@@ -13,11 +13,11 @@ print('Username: {0}'.format(session['userCtx']['name']))
 print('Databases: {0}'.format(client.all_dbs()))
 
 # default target database
-dbname = 'test'
+dbname = 'test2'
 # create a database with name
 def creatDB(name ='car'):
     if name in client:
-        print('DB exist')
+        print('DB',name,'exist')
         my_database = client[name]
     else:
         my_database = client.create_database(name)
@@ -30,25 +30,27 @@ def creatDB(name ='car'):
     dbname = name
 
 # get tweet(string) and insert it to couchDB
-def pushTweet(tweet,name = dbname):
+def postTweet(tweet, name = dbname):
+    print('post',name)
     if type(tweet) == 'str':
         Ddata = json.loads(tweet)
     else:
         Ddata = tweet
-    print(Ddata)
+    #pprint(Ddata)
+    print(Ddata['carbrands'])
     my_document = client[name].create_document(Ddata)
 
     # Check that the document exists in the database
-    if my_document.exists():
-        #print('--------SUCCESS!!----------')
-        # Display the document
-        #pprint(my_document)
-        pass
+    # if my_document.exists():
+    #     print('--------SUCCESS!!----------')
+    #     # Display the document
+    #     pprint(my_document)
+    #     pass
     return True
 
-def pushTweets(tweets,name = dbname):
+def postTweets(tweets, name = dbname):
     for t in tweets:
-        pushTweet(t,name)
+        postTweet(t, name)
 
 
 
@@ -61,7 +63,7 @@ def getViewResult(ddocID = '_design/testDoc' , viewID = 'occurrenceByPlace'):
 
     print('-'*15+'view'+'-'*15)
     #pprint(view.result)
-    with view.custom_result(group=True) as rslt:
+    with view.custom_result(group=True,reduce=True) as rslt:
         for doc in rslt:
             print(doc)
 
