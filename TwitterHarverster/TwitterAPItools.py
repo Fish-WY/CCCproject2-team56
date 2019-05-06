@@ -8,6 +8,7 @@ from pprint import pprint
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from geotext import GeoText
 import string
+from polygon import getRegion
 
 analyzer = SentimentIntensityAnalyzer()
 
@@ -134,21 +135,31 @@ def processData(data):
 
     # vader sentiment analysis
     # compound is the score [-1,1]
-    vs = analyzer.polarity_scores(raw['text'])['compound']
+    vs = analyzer.polarity_scores(tmp['text'])['compound']
     tmp['compound'] = vs
     if vs <= -0.05 : tmp['sentiment'] = 'negative'
     elif vs >= 0.05 : tmp['sentiment'] = 'positive'
     else : tmp['sentiment'] = 'neutral'
 
-    # extract cities from raw text
-    tmp['where'] = {'city':[]}
-    if not raw['place'] == None:
-        places = GeoText(raw['place']['full_name'])
-        if len(places.cities) > 1:
-            #print(places.cities)
-            #print('cities > 1 error!!!')
-            pass
-        tmp['where']['city'] = places.cities
+    # extract cities
+    if 'key' in data:
+        tmp['where'] = [data['key'][0]]
+    if tmp['geo'] != None:
+        y,x = tmp['geo']['coordinates']
+        tmp['where'].append(getRegion([x,y]))
+    elif tmp['coordinates'] != None:
+        tmp['where'].append(getRegion(tmp['coordinates']['coordinates']))
+    else:
+        tmp['where'].append('')
+    # from raw text
+    # tmp['where'] = {'city':[]}
+    # if not raw['place'] == None:
+    #     places = GeoText(raw['place']['full_name'])
+    #     if len(places.cities) > 1:
+    #         #print(places.cities)
+    #         #print('cities > 1 error!!!')
+    #         pass
+    #     tmp['where']['city'] = places.cities
     #pprint(tmp)
 
     # check hashtags
@@ -160,7 +171,7 @@ def processData(data):
         for tagentities in raw['entities']['hashtags']:
             tmp['hashtags'].append(tagentities['text'])
 
-    postTweet(tmp,'trash')
+    postTweet(tmp,'car')
 
 class listener(StreamListener):
 

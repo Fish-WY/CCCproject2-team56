@@ -7,7 +7,7 @@ from APIconfig import ausCities
 total = 0
 fname = 'adelaide2015.json'
 
-creatDB('trash')
+creatDB('car')
 for city in ausCities:
     print('star file',city)
     print('total tweets',total)

@@ -6,7 +6,7 @@ from pprint import pprint
 USERNAME = 'admin'
 PASSWORD = 'admin'
 
-client = CouchDB(USERNAME, PASSWORD, url='http://localhost:5985', connect=True)
+client = CouchDB(USERNAME, PASSWORD, url='http://45.113.235.214:5985', connect=True)
 # Perform client tasks...
 session = client.session()
 print('Username: {0}'.format(session['userCtx']['name']))
@@ -55,7 +55,7 @@ def postTweets(tweets, name = dbname):
 
 
 
-def getViewResult(ddocID = '_design/testDoc' , viewID = 'occurrenceByPlace'):
+def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'occurrenceByPlace'):
     doc = client[dbname].get_design_document(ddocID)
     pprint(doc)
     view = doc.get_view(viewID)
@@ -63,7 +63,7 @@ def getViewResult(ddocID = '_design/testDoc' , viewID = 'occurrenceByPlace'):
 
     print('-'*15+'view'+'-'*15)
     #pprint(view.result)
-    with view.custom_result(group=True,reduce=True) as rslt:
+    with view.custom_result(group_level=2,reduce=True) as rslt:
         for doc in rslt:
             print(doc)
 
