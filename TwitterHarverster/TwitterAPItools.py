@@ -145,8 +145,9 @@ def processData(data):
     if not raw['place'] == None:
         places = GeoText(raw['place']['full_name'])
         if len(places.cities) > 1:
-            print(places.cities)
-            print('cities > 1 error!!!')
+            #print(places.cities)
+            #print('cities > 1 error!!!')
+            pass
         tmp['where']['city'] = places.cities
     #pprint(tmp)
 
