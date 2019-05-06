@@ -84,12 +84,12 @@ def Tgeo(geo = ''):
 # process StreamListener data by carbrand
 # extract useful info and compute sentiment parameter
 def processData(data):
-    print(type(data))
+    #print(type(data))
     if isinstance(data,dict):
         raw = data['doc']
     else:
         raw = json.loads(data)
-    pprint(raw)
+    #pprint(raw)
 
     tmp = {}
 
@@ -114,7 +114,7 @@ def processData(data):
             signal = True
             tmp['carbrands'].append(word.lower())
     if not signal:
-        print('no car brand inside')
+        #print('no car brand inside')
         return
 
     # check media

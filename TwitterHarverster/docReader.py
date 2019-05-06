@@ -9,6 +9,7 @@ fname = 'adelaide2015.json'
 
 creatDB('trash')
 for city in ausCities:
+    print('star file',city)
     fname = city + '2015.json'
     try:
         f = open('./historytweets/'+fname,'r',encoding='UTF-8')
@@ -27,8 +28,10 @@ for city in ausCities:
             total += 1  # conunt total twitters
             #pprint(twi)
             processData(twi)
-    except :
-        print()
+    except IOError as e:
+        print(e)
+        print('docReader error')
+        continue
     finally:
         f.close()
 

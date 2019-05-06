@@ -31,13 +31,13 @@ def creatDB(name ='car'):
 
 # get tweet(string) and insert it to couchDB
 def postTweet(tweet, name = dbname):
-    print('post',name)
+    #print('post',name)
     if type(tweet) == 'str':
         Ddata = json.loads(tweet)
     else:
         Ddata = tweet
     #pprint(Ddata)
-    print(Ddata['carbrands'])
+    #print(Ddata['carbrands'])
     my_document = client[name].create_document(Ddata)
 
     # Check that the document exists in the database
