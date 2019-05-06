@@ -32,7 +32,7 @@ geoBlock = dict(
     vic=[140.96, -39.18, 144.04, -33.98, 144.04, -39.16, 149.98, -35.91],
     aus=[105.033007, -42.384930, 153.844606, -10.466363]
 )
-ausCities = ['adelaide','brisbane','canberra','hobart','melbourne','perth','sydney']
+ausCities = ['adelaide','brisbane','canberra','melbourne','perth','sydney','hobart']
 
 carBrand = ['Abarth', 'Acura', 'Alfa Romeo', 'Alpina', 'Aston Martin','Audi',
 'BMW','Bentley',
