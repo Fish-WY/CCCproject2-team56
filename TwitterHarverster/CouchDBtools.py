@@ -64,8 +64,11 @@ def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'occurrenceB
     print('-'*15+'view'+'-'*15)
     #pprint(view.result)
     with view.custom_result(group_level=2,reduce=True) as rslt:
+        print(rslt)
         for doc in rslt:
+            print(type(doc))
             print(doc)
+    return rslt
 
 
 
