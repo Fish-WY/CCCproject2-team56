@@ -23,3 +23,12 @@ docker run -d -p 5984:5984 --name cb1 couchdb:2.3.0
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
 ```
+
+## draft couchDB
+```
+ssh -fNg -L 5985:172.17.0.2:5984 -i HT.pem ubuntu@45.113.235.143
+http://locahost:5985/_utils
+```
+```
+http://45.113.235.214:5984/_utils
+```

@@ -19,5 +19,6 @@ metadata such as carBrands, coordinations ......
 ## docReader.py
 read downloaded twitter data from UNIMELB
 ```
-python3 docReader.py 1>/dev/null 2>error &
+python3 docReader.py 1>/dev/null 2>error.txt &
+python3 docReader.py 1>output.txt 2>error.txt &
 ```

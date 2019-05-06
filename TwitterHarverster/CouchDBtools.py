@@ -31,7 +31,7 @@ def creatDB(name ='car'):
 
 # get tweet(string) and insert it to couchDB
 def postTweet(tweet, name = dbname):
-    #print('post',name)
+    print('post',name)
     if type(tweet) == 'str':
         Ddata = json.loads(tweet)
     else:
