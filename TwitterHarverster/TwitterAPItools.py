@@ -97,16 +97,16 @@ def processData(data):
 
     # get userful info
     tmp['_id'] = raw['id_str']
-    #tmp['id'] = raw['id']
+    tmp['id'] = raw['id_str']
     tmp['geo'] = raw['geo']
     tmp['coordinates'] = raw['coordinates']
     tmp['place'] = raw['place']
     tmp['truncated'] = raw['truncated']
     if 'extended_tweet' in raw:
         tmp['text']= raw['extended_tweet']['full_text']
-        tmp['retweet'] = raw['retweeted_status']['text']
     else:
         tmp['text'] = raw['text']
+
 
     # check carbrands in rawtext
     tmp['carbrands'] = []
@@ -131,7 +131,11 @@ def processData(data):
         tmp['includePhoto'] = False
 
     # todo check retweet
-    #
+    if 'retweeted_status' in raw:
+        tmp['retweet'] = {'text': raw['retweeted_status']['text']}
+        tmp['retweet']['compound'] = analyzer.polarity_scores(raw['retweeted_status']['text'])['compound']
+    else:
+        tmp['retweet'] = {}
 
 
     # vader sentiment analysis
@@ -150,8 +154,13 @@ def processData(data):
     if 'key' in data:
         tmp['where'] = [data['key'][0]]
     else:
-        # todo get city from API
-        tmp['where'] = ['sydney']
+        # get city from API
+        for city in ausCities:
+            if raw['place']['full_name'].find(city) != -1:
+                tmp['where'] = [city]
+                break
+        else:
+            return
 
     # extract region
     if tmp['geo'] != None:
@@ -181,7 +190,13 @@ def processData(data):
         for tagentities in raw['entities']['hashtags']:
             tmp['hashtags'].append(tagentities['text'])
 
-    postTweet(tmp,'trash')
+    tmp['cartags'] = []
+    for tag in ['supercar','luxurycar']:
+        if tag in tmp['hashtags']:
+            tmp['cartags'].append(tag)
+    if not tmp['cartags']:  postTweet(tmp,'cartags')
+
+    postTweet(tmp,'car')
 
 class listener(StreamListener):
 

@@ -55,7 +55,7 @@ def postTweets(tweets, name = dbname):
 
 
 
-def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'occurrenceByCity'):
+def getViewResult(dbname = 'trash', ddocID = '_design/car' , viewID = 'byCity'):
     doc = client[dbname].get_design_document(ddocID)
     pprint(doc)
     view = doc.get_view(viewID)
@@ -63,11 +63,13 @@ def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'occurrenceB
 
     print('-'*15+'view'+'-'*15)
     #pprint(view.result)
-    with view.custom_result(group_level=2,reduce=True) as rslt:
-        #print(rslt)
-        for doc in rslt:
+    with view.custom_result(group_level = 2) as rslt:
+        pprint(rslt)
+
+        for doc in rslt.all():
             #print(type(doc))
             print(doc)
+            pass
     return rslt
 
 
