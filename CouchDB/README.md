@@ -13,7 +13,7 @@ df -h
 use docker to lunch CouchDB
 image: couchdb:2.3.0
 ```
-docker run -d -p 5984:5984 -p 4369:4369 -v /opt/couchdb/data --name cb1 couchdb:2.3.0
+docker run -d -p 5984:5984 -p 4369:4369 -p 9100:9100 -v /opt/couchdb/data --name cb couchdb:2.3.0
 ```
 -p open port 5984 to outside
 -d background
@@ -24,7 +24,18 @@ docker run -d -p 5984:5984 -p 4369:4369 -v /opt/couchdb/data --name cb1 couchdb:
 ```
 docker stop $(docker ps -aq)
 docker rm $(docker ps -aq)
-docker exec -it 775c7c9ee1e1 /bin/bash  
+```
+
+## Configure and Test the Communication with Erlang
+insert Configuration
+```
+docker exec cb bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args"
+docker exec cb bash -c "echo \"-name couchdb@45.113.235.214\" >> /opt/couchdb/etc/vm.args"
+```
+check
+```
+docker exec -it cb1 /bin/bash
+cat /opt/couchdb/etc/vm.args
 ```
 
 ## draft couchDB
