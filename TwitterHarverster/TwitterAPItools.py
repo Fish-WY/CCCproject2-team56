@@ -90,7 +90,7 @@ def processData(data):
         raw = data['doc']
     else:
         raw = json.loads(data)
-    pprint(raw)
+    #pprint(raw)
 
     tmp = {}
 
