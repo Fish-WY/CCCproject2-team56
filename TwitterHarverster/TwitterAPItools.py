@@ -108,16 +108,7 @@ def processData(data):
         tmp['text'] = raw['text']
 
 
-    # check carbrands in rawtext
-    tmp['carbrands'] = []
-    signal = False
-    for word in tmp['text'].split():
-        if word.lower() in carBrandLower:
-            signal = True
-            tmp['carbrands'].append(word.lower())
-    if not signal:
-        #print('no car brand inside')
-        return
+
 
     # check media
     if 'extended_entities' in raw:
@@ -194,7 +185,18 @@ def processData(data):
     for tag in ['supercar','luxurycar']:
         if tag in tmp['hashtags']:
             tmp['cartags'].append(tag)
-    if not tmp['cartags']:  postTweet(tmp,'cartags')
+    if tmp['cartags']:  postTweet(tmp,'cartags')
+
+    # check carbrands in text
+    tmp['carbrands'] = []
+    signal = False
+    for word in tmp['text'].split():
+        if word.lower() in carBrandLower:
+            signal = True
+            tmp['carbrands'].append(word.lower())
+    if not signal:
+        # print('no car brand inside')
+        return
 
     postTweet(tmp,'car')
 
