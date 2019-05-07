@@ -90,7 +90,7 @@ def processData(data):
         raw = data['doc']
     else:
         raw = json.loads(data)
-    #pprint(raw)
+    pprint(raw)
 
     tmp = {}
 
@@ -101,9 +101,10 @@ def processData(data):
     tmp['geo'] = raw['geo']
     tmp['coordinates'] = raw['coordinates']
     tmp['place'] = raw['place']
-    tmp['retweeted'] = raw['retweeted']
-    if raw['truncated']:
+    tmp['truncated'] = raw['truncated']
+    if 'extended_tweet' in raw:
         tmp['text']= raw['extended_tweet']['full_text']
+        tmp['retweet'] = raw['retweeted_status']['text']
     else:
         tmp['text'] = raw['text']
 
@@ -164,7 +165,7 @@ def processData(data):
 
     # check hashtags
     tmp['hashtags'] = []
-    if raw['truncated']:
+    if 'extended_tweet' in raw:
         for tagentities in raw['extended_tweet']['entities']['hashtags']:
             tmp['hashtags'].append(tagentities['text'])
     else:
