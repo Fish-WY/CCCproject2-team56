@@ -10,12 +10,12 @@ fname = './historytweets/adelaide2015.json'
 creatDB('car')
 for year in ['2015','2016']:
     for city in ausCities:
-        print('star file',city,year)
-        print('total tweets',total)
         fname = city + year + '.json'
+        print('start file',fname)
+        print('total tweets',total)
         try:
-            f = open('/data/'+fname,'r',encoding='UTF-8')
-            #f = open('./historytweets/adelaide2015.json', 'r', encoding='UTF-8')
+            #f = open('/data/'+fname,'r',encoding='UTF-8')
+            f = open('./historytweets/adelaide2015.json', 'r', encoding='UTF-8')
 
             print(f.readline())
 
