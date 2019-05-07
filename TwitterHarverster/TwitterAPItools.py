@@ -7,8 +7,8 @@ from APIconfig import *
 from pprint import pprint
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from geotext import GeoText
-import string
 from polygon import getRegion
+import random
 
 analyzer = SentimentIntensityAnalyzer()
 
@@ -130,8 +130,8 @@ def processData(data):
         tmp['includeMedia'] = False
         tmp['includePhoto'] = False
 
-    # check retweet
-    # todo
+    # todo check retweet
+    #
 
 
     # vader sentiment analysis
@@ -142,16 +142,25 @@ def processData(data):
     elif vs >= 0.05 : tmp['sentiment'] = 'positive'
     else : tmp['sentiment'] = 'neutral'
 
+    # if tmp['coordinates'] == None:
+    #     postTweet(raw, 'trash')
+    #     return
+
     # extract cities
     if 'key' in data:
         tmp['where'] = [data['key'][0]]
+    else:
+        # todo get city from API
+        tmp['where'] = ['sydney']
+
+    # extract region
     if tmp['geo'] != None:
         y,x = tmp['geo']['coordinates']
         tmp['where'].append(getRegion([x,y]))
     elif tmp['coordinates'] != None:
         tmp['where'].append(getRegion(tmp['coordinates']['coordinates']))
     else:
-        tmp['where'].append('')
+        tmp['where'].append(random.choice(mymap[tmp['where'][0]]))
     # from raw text
     # tmp['where'] = {'city':[]}
     # if not raw['place'] == None:
@@ -172,7 +181,7 @@ def processData(data):
         for tagentities in raw['entities']['hashtags']:
             tmp['hashtags'].append(tagentities['text'])
 
-    postTweet(tmp,'car')
+    postTweet(tmp,'trash')
 
 class listener(StreamListener):
 

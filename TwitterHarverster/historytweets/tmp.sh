@@ -23,8 +23,9 @@ curl "http://45.113.232.90/couchdbro/twitter/_design/twitter/_view/summary" \
 docker exec cb1 bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args"
 docker exec cb1 bash -c "echo \"-name couchdb@45.113.235.214\" >> /opt/couchdb/etc/vm.args"
 
-erl -name couchdb@45.113.235.214 -setcookie 'brumbrum' -kernel inet_dist_listen_min 9100 -kernel inet_dist_listen_max 9100
+erl -name couchdb@45.113.235.214 -setcookie 'couchdb_cluster' -kernel inet_dist_listen_min 9100 -kernel inet_dist_listen_max 9100
 
+565761996247662592
 
 
 45.113.233.28

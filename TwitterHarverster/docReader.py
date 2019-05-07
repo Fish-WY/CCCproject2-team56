@@ -7,7 +7,7 @@ from APIconfig import ausCities
 total = 0
 fname = './historytweets/adelaide2015.json'
 
-creatDB('car')
+creatDB('trash')
 for year in ['2015','2016']:
     for city in ausCities:
         fname = city + year + '.json'
@@ -15,7 +15,7 @@ for year in ['2015','2016']:
         print('total tweets',total)
         try:
             #f = open('/data/'+fname,'r',encoding='UTF-8')
-            f = open('./historytweets/adelaide2015.json', 'r', encoding='UTF-8')
+            f = open('./historytweets/perth2016.json', 'r', encoding='UTF-8')
 
             print(f.readline())
 
