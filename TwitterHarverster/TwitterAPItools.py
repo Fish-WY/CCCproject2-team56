@@ -59,7 +59,7 @@ def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car')
                     current_id[city] = max(current_id[city],r.id)
                     print(r.text)
                     processData(r._json)
-
+                current_id[city] += 1
             except tweepy.RateLimitError as e:
                 print('RateLimitError !!! lets sleep 15 min')
                 sleep(15*60)
