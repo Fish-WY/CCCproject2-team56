@@ -100,7 +100,7 @@ def processData(data):
     else:
         tmp['text'] = raw['text']
 
-
+    print(tmp['text'])
 
 
     # check media
@@ -137,7 +137,7 @@ def processData(data):
     # extract cities
     if 'key' in data and 'value' in data:
         tmp['where'] = [data['key'][0]]
-    else:
+    elif raw['place']:
         # get city from API
         for city in ausCities:
             if raw['place']['full_name'].find(city) != -1:
@@ -145,6 +145,7 @@ def processData(data):
                 break
         else:
             return
+    else: return
 
     # extract region
     if tmp['geo'] != None:
@@ -191,6 +192,7 @@ def processData(data):
         # print('no car brand inside')
         return
 
+    print('---post one---')
     postTweet(tmp,name = 'car')
 
 class listener(StreamListener):
@@ -218,6 +220,7 @@ def beginStream(dbname,query = carBrand):
 
     print('begin listening')
     #track=["a", "the", "i", "you", "u"]
+    #track=carBrandLower
     twitterStream.filter(locations= geoBlock['aus'],languages = ['en'])
 
 
