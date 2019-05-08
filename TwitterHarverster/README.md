@@ -22,3 +22,11 @@ read downloaded twitter data from UNIMELB
 python3 docReader.py 1>/dev/null 2>error.txt &
 python3 docReader.py 1>output.txt 2>error.txt &
 ```
+
+## dependency
+```
+pip3 install cloudant
+pip3 install geotext
+pip3 install vaderSentiment
+
+```

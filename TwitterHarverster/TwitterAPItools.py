@@ -69,12 +69,31 @@ def showMytweets():
        print(tweet.text)
 
 
-def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car'):
+def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car',since_id = 1):
     # Parameters reference
     # https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html
-    results = api.search(geocode=geo,lang = lang,)
-    for r in results:
-        print(r.text)
+    current_id = {city: 0 for city in ausCities}
+
+    while True:
+        for city in ausCities:
+            geocode = geoNode[city]
+            since_id = current_id[city]
+            print('-'*15,city,since_id,'-'*15)
+            try:
+                results = api.search(q=carBrandLower,geocode=geocode,lang = lang,include_entities = True,since_id = since_id,result_type='mixed',count=50)
+                for r in results:
+                    current_id[city] = max(current_id[city],r.id)
+                    print(r.text)
+
+
+            except tweepy.RateLimitError as e:
+                print('RateLimitError !!! lets sleep 15 min')
+                sleep(15*60)
+            except tweepy.TweepError as e:
+                print(e.response.text)
+                break
+
+
 
     return results
 
@@ -198,7 +217,7 @@ def processData(data):
         # print('no car brand inside')
         return
 
-    postTweet(tmp,'car')
+    postTweet(tmp,name = 'car')
 
 class listener(StreamListener):
 
@@ -236,13 +255,15 @@ def getOne():
 
 
 if __name__ == '__main__':
-    query = carBrand
-    lang = "en"
-    geo = geoNode['sydney']
-    dbname = 'car'
-    results = api.search(geocode=geo, lang=lang,fromDate = '201712220000',toDate = '201812220000' )
-    for r in results:
-        pprint(r)
+    print('___________Twitter API test____________')
+    # query = carBrand
+    # lang = "en"
+    # geo = geoNode['sydney']
+    # dbname = 'car'
+    # results = api.search(geocode=geo, lang=lang,fromDate = '201712220000',toDate = '201812220000' )
+    # for r in results:
+    #     pprint(r)
+    Tsearch()
 
 
 
