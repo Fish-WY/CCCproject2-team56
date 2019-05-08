@@ -31,37 +31,11 @@ auth.set_access_token(access_token_key, access_token_secret)
 api = tweepy.API(auth)
 print('Twitter API created')
 
-def testTweepyStatus(ts):
-    for a in ts:
-        print('-'*15+'test'+'-'*15)
-        print(a.geo)
-        print(a.coordinates)
-        pprint(a.place)
-        print(a.retweets)
-        print(a.created_at)
-        print(a.text)
-        print(a.id)
-        print(a.id_str)
-        print(a.parse)
-        pprint(a.entities)
 '''
-normal API return an object #processTweet
-but stream API return a string  #processData
+normal API return an object  status._json >> str
+but stream API return a string  
 so there is a bit different in there
 '''
-def processTweet(tweet):
-    # get raw text part
-    # print(tweet.user.screen_name,"Tweeted:",tweet.text)
-
-    pTweet = dict(
-        _id = tweet.id,
-        geo = tweet.geo,
-        coordinates = tweet.coordinates,
-        place = tweet.palce,
-    )
-
-def stripTweetByCar(tweet):
-    pass
 
 def showMytweets():
     public_tweets = api.home_timeline()
@@ -69,7 +43,7 @@ def showMytweets():
        print(tweet.text)
 
 
-def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car',since_id = 1):
+def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car'):
     # Parameters reference
     # https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets.html
     current_id = {city: 0 for city in ausCities}
@@ -80,33 +54,33 @@ def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car',
             since_id = current_id[city]
             print('-'*15,city,since_id,'-'*15)
             try:
-                results = api.search(q=carBrandLower,geocode=geocode,lang = lang,include_entities = True,since_id = since_id,result_type='mixed',count=50)
+                results = api.search(q='car',geocode=geocode,lang = lang,include_entities = True,since_id = since_id,result_type='mixed')
                 for r in results:
                     current_id[city] = max(current_id[city],r.id)
                     print(r.text)
-
+                    processData(r._json)
 
             except tweepy.RateLimitError as e:
                 print('RateLimitError !!! lets sleep 15 min')
                 sleep(15*60)
             except tweepy.TweepError as e:
                 print(e.response.text)
-                break
-
-
-
+                return
     return results
 
 def Tgeo(geo = ''):
     results = api.reverse_geocode(granularity='city',)
-    testTweepyStatus(results)
+    return  results
 
 # process StreamListener data by carbrand
 # extract useful info and compute sentiment parameter
 def processData(data):
     #print(type(data))
     if isinstance(data,dict):
-        raw = data['doc']
+        if 'doc' in data:
+            raw = data['doc']
+        else:
+            raw = data
     else:
         raw = json.loads(data)
     #pprint(raw)
@@ -179,7 +153,7 @@ def processData(data):
     elif tmp['coordinates'] != None:
         tmp['where'].append(getRegion(tmp['coordinates']['coordinates']))
     else:
-        tmp['where'].append(random.choice(mymap[tmp['where'][0]]))
+        tmp['where'].append(random.choice(regionMap[tmp['where'][0]]))
     # from raw text
     # tmp['where'] = {'city':[]}
     # if not raw['place'] == None:
@@ -212,7 +186,7 @@ def processData(data):
     for word in tmp['text'].split():
         if word.lower() in carBrandLower:
             signal = True
-            tmp['carbrands'].append(word.lower())
+            tmp['carbrands'].append(carBrandmap[word.lower()])
     if not signal:
         # print('no car brand inside')
         return

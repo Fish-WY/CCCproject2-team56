@@ -1,3 +1,4 @@
+from pprint import pprint
 stream_api = {
     'consumer_key' : 'fxAkAR5lwg2Ruwp44iW4QlCdj',
     'consumer_secret' : '0g31TlRcU2LuwabCuziFRvPQvPIvkIOUe766wbUJqiSJjDhRQ8',
@@ -59,7 +60,7 @@ carBrandLower = {'rolls-royce', 'jeep', 'foton', 'maserati', 'mahindra', 'acura'
                  'land rover', 'daewoo', 'holden', 'lexus', 'audi', 'mini', 'hsv', 'lamborghini',
                  'ford', 'mazda', 'renault', 'ram', 'toyotavolkswagen', 'great wall', 'daihatsu',
                  'skoda', 'volvo', 'alpina', 'nissan', 'chrysler', 'infiniti', 'porsche', 'dodgeferrari',
-                 'peugeot', 'mercedes','benz', 'suzuki', 'mg', 'chevrolet', 'mclaren', 'jaguar', 'fiat', 'haval'}
+                 'peugeot', 'mercedes', 'benz', 'suzuki', 'mg', 'chevrolet', 'mclaren', 'jaguar', 'fiat', 'haval'}
 
 machine1 = dict(
     index=0,
@@ -96,7 +97,7 @@ machine4 = dict(
 
 
 
-mymap = {
+regionMap = {
  'adelaide': ['Adelaide - Central and Hills',
               'Adelaide - North',
               'Adelaide - South',
@@ -135,3 +136,75 @@ mymap = {
             'Sydney - Ryde',
             'Sydney - South West',
             'Sydney - Sutherland']}
+
+carBrandmap ={
+ 'abarth': 'abarth',
+ 'acura': 'acura',
+ 'alfa romeo': 'alfa romeo',
+ 'alpina': 'alpina',
+ 'aston martin': 'aston martin',
+ 'audi': 'audi',
+ 'bentley': 'bentley',
+ 'bmw': 'bmw',
+ 'chevrolet': 'chevrolet',
+ 'chrysler': 'chrysler',
+ 'citroen': 'citroen',
+ 'daewoo': 'daewoo',
+ 'daihatsu': 'daihatsu',
+ 'dodgeferrari': 'dodgeferrari',
+ 'fiat': 'fiat',
+ 'ford': 'ford',
+ 'foton': 'foton',
+ 'great wall': 'great wall',
+ 'haval': 'haval',
+ 'holden': 'holden',
+ 'honda': 'honda',
+ 'hsv': 'hsv',
+ 'hyundai': 'hyundai',
+ 'infiniti': 'infiniti',
+ 'isuzu': 'isuzu',
+ 'jaguar': 'jaguar',
+ 'jeep': 'jeep',
+ 'kia': 'kia',
+ 'lamborghini': 'lamborghini',
+ 'land rover': 'land rover',
+ 'ldv': 'ldv',
+ 'lexus': 'lexus',
+ 'lotus': 'lotus',
+ 'mahindra': 'mahindra',
+ 'maserati': 'maserati',
+ 'mazda': 'mazda',
+ 'mclaren': 'mclaren',
+ 'mercedes':'mercedes benz',
+ 'benz': 'mercedes benz',
+ 'mg': 'mg',
+ 'mini': 'mini',
+ 'mitsubishi': 'mitsubishi',
+ 'nissan': 'nissan',
+ 'peugeot': 'peugeot',
+ 'porsche': 'porsche',
+ 'ram': 'ram',
+ 'renault': 'renault',
+ 'rolls-royce': 'rolls-royce',
+ 'skoda': 'skoda',
+ 'ssangyong': 'ssangyong',
+ 'subaru': 'subaru',
+ 'suzuki': 'suzuki',
+ 'tata': 'tata',
+ 'tesla': 'tesla',
+ 'toyotavolkswagen': 'toyotavolkswagen',
+ 'volvo': 'volvo'}
+
+
+URLquery = '%27lamborghini%27%20OR%20%27skoda%27%20OR%20%27land rover%27%20OR%20%27foton%27%20OR%20%27audi%27%20OR%20%27mclaren%27%20OR%20%27alfa%20romeo%27%20OR%20%27mitsubishi%27%20OR%20%27ldv%27%20OR%20%27bentley%27%20OR%20%27suzuki%27%20OR%20%27daewoo%27%20OR%20%27great%20wall%27%20OR%20%27ford%27%20OR%20%27mazda%27%20OR%20%27daihatsu%27%20OR%20%27infiniti%27%20OR%20%27renault%27%20OR%20%27chevrolet%27%20OR%20%27toyotavolkswagen%27%20OR%20%27rolls-royce%27%20OR%20%27acura%27%20OR%20%27mini%27%20OR%20%27fiat%27%20OR%20%27lotus%27%20OR%20%27lexus%27%20OR%20%27holden%27%20OR%20%27tata%27%20OR%20%27jeep%27%20OR%20%27porsche%27%20OR%20%27hyundai%27%20OR%20%27abarth%27%20OR%20%27hsv%27%20OR%20%27jaguar%27%20OR%20%27isuzu%27%20OR%20%27peugeot%27%20OR%20%27honda%27%20OR%20%27dodgeferrari%27%20OR%20%27ssangyong%27%20OR%20%27kia%27%20OR%20%27subaru%27%20OR%20%27nissan%27%20OR%20%27alpina%27%20OR%20%27haval%27%20OR%20%27mercedes%20benz%27%20OR%20%27chrysler%27%20OR%20%27ram%27%20OR%20%27volvo%27%20OR%20%27aston%20martin%27%20OR%20%27mg%27%20OR%20%27maserati%27%20OR%20%27tesla%27%20OR%20%27mahindra%27%20OR%20%27citroen%27%20OR%20%27bmw%27'
+
+
+
+if __name__ == '__main__':
+    ans = ''
+    for c in carBrandLower:
+        ans = ans+ '%20OR%20'+ '%27'+c+'%27'
+    print(ans)
+
+    carBrandmap = {i:i for i in carBrandLower}
+    pprint(carBrandmap)
