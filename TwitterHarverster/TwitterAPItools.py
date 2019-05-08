@@ -135,7 +135,7 @@ def processData(data):
     #     return
 
     # extract cities
-    if 'key' in data:
+    if 'key' in data and 'value' in data:
         tmp['where'] = [data['key'][0]]
     else:
         # get city from API
