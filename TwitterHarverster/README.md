@@ -10,7 +10,9 @@ mission name carbrands
 
 target database name trash
 ```
-python3 run.py carbrands trash
+nohup python3 run.py 1> output.txt 2> error.txt &
+ps -ef | grep .py
+kill
 ```
 ## CouchDBtools.py & TwitterAPItools.py
 defined python functions for couchDB and Twitter API to be called by run.py
@@ -20,7 +22,7 @@ metadata such as carBrands, coordinations ......
 read downloaded twitter data from UNIMELB
 ```
 python3 docReader.py 1>/dev/null 2>error.txt &
-python3 docReader.py 1>output.txt 2>error.txt &
+nohup python3 docReader.py 1>docout.txt 2>docerror.txt &
 ```
 
 ## dependency
@@ -28,5 +30,6 @@ python3 docReader.py 1>output.txt 2>error.txt &
 pip3 install cloudant
 pip3 install geotext
 pip3 install vaderSentiment
-
+pip3 install tweepy
+pip3 install pprint
 ```

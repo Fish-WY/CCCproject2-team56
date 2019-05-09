@@ -7,7 +7,7 @@ from APIconfig import ausCities
 total = 0
 fname = './historytweets/adelaide2015.json'
 
-creatDB('trash')
+creatDB('car')
 for year in ['2015','2016']:
     for city in ausCities:
         fname = city + year + '.json'

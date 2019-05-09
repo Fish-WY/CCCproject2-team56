@@ -57,7 +57,7 @@ def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car')
                 results = api.search(q='car',geocode=geocode,lang = lang,include_entities = True,since_id = since_id,result_type='mixed')
                 for r in results:
                     current_id[city] = max(current_id[city],r.id)
-                    print(r.text)
+                    #print(r.text)
                     processData(r._json)
                 current_id[city] += 1
             except tweepy.RateLimitError as e:
@@ -66,6 +66,9 @@ def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car')
             except tweepy.TweepError as e:
                 print(e.response.text)
                 return
+        else:
+            print("wait 1 min for more tweet")
+            sleep(60)
     return results
 
 def Tgeo(geo = ''):
@@ -176,10 +179,11 @@ def processData(data):
             tmp['hashtags'].append(tagentities['text'])
 
     tmp['cartags'] = []
-    for tag in ['supercar','luxurycar']:
+    for tag in ['car']:
         if tag in tmp['hashtags']:
             tmp['cartags'].append(tag)
-    if tmp['cartags']:  postTweet(tmp,'cartags')
+    if tmp['cartags'] or tmp['text'].find('car') != -1:
+        postTweet(tmp,'cartags')
 
     # check carbrands in text
     tmp['carbrands'] = []
@@ -216,8 +220,6 @@ class listener(StreamListener):
 
 def beginStream(dbname,query = carBrand):
     twitterStream = Stream(auth, listener())
-    #track=["sports"]
-
     print('begin listening')
     #track=["a", "the", "i", "you", "u"]
     #track=carBrandLower
