@@ -8,7 +8,8 @@ total = 0
 fname = './historytweets/adelaide2015.json'
 
 creatDB('car')
-for year in ['2015','2016']:
+for year in range(2014,2020):
+    year = str(year)
     for city in ausCities:
         fname = city + year + '.json'
         print('start file',fname)
@@ -34,10 +35,10 @@ for year in ['2015','2016']:
             f.close()
         except IOError as e:
             print(e)
-            print('docReader error')
+            print('doc open error')
             continue
         finally:
             pass
-
+print('docReader  finish!!!')
 print('total tweets',total)
 
