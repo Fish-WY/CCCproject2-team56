@@ -19,7 +19,7 @@ do
         --user "readonly:ween7ighai9gahR6" \
         -o /data/${city}${year}.json
         echo start docReader ${city}${year}.json
-        python3 docReader.py ${city}${year}.json 1>docout.txt 2>docerror.txt &
+        python3 docReader.py ${city}${year}.json 1>docout.txt 2>docerror.txt
 
         # nohup python3 docReader.py 1>docout.txt 2>docerror.txt &
         rm ${city}${year}.json
