@@ -41,10 +41,11 @@ def readDoc(fname):
         pass
 
 
-if len(sys.argv) >= 2:
+if len(sys.argv) > 2:
     # city = sys.argv[1]
     # year = sys.argv[2]
     # fname = city + year + '.json'
+    print(sys.argv)
     fname = sys.argv[1]
     readDoc(fname)
 else:
