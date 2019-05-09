@@ -93,6 +93,7 @@ def processData(data):
 
     # get userful info
     tmp['_id'] = raw['id_str']
+    tmp['when'] = raw['created_at']
     tmp['id'] = raw['id_str']
     tmp['geo'] = raw['geo']
     tmp['coordinates'] = raw['coordinates']
@@ -103,7 +104,7 @@ def processData(data):
     else:
         tmp['text'] = raw['text']
 
-    print(tmp['text'])
+    #print(tmp['text'])
 
 
     # check media
