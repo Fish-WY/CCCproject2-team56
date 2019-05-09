@@ -2,15 +2,22 @@ import time
 from TwitterAPItools import *
 import json
 from APIconfig import ausCities
+import sys
 
 #read by line
 total = 0
 fname = './historytweets/adelaide2015.json'
-
 creatDB('car')
-for year in range(2014,2020):
+
+
+mission = sys.argv[1]
+# target couch database name
+dbname = sys.argv[2]
+
+
+for year in range(2016,2020):
     year = str(year)
-    for city in ausCities:
+    for city in ausCities[::-1]:
         fname = city + year + '.json'
         print('start file',fname)
         print('total tweets',total)
