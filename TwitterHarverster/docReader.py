@@ -29,6 +29,7 @@ for year in range(2014,2020):
                     print('JSONDecodeError !!!')
                     continue
                 total += 1  # conunt total twitters
+                if total%500 == 0: print(total,'tweets read')
                 #pprint(twi)
                 processData(twi)
 

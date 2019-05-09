@@ -184,7 +184,7 @@ def processData(data):
     for tag in ['car']:
         if tag in tmp['hashtags']:
             tmp['cartags'].append(tag)
-    if tmp['cartags'] or tmp['text'].find('car') != -1:
+    if tmp['cartags']:
         cartagsignal = True
 
 
@@ -192,9 +192,12 @@ def processData(data):
     tmp['carbrands'] = []
     carbrandsignal = False
     for word in tmp['text'].split():
-        if word.lower() in carBrandLower:
+        word = word.lower()
+        if wordin carBrandLower:
             carbrandsignal = True
-            tmp['carbrands'].append(carBrandmap[word.lower()])
+            tmp['carbrands'].append(carBrandmap[word])
+            if word == 'car' or word == 'cars':
+                cartagsignal =True
 
 
     #print('---post one---')
