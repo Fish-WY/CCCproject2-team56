@@ -193,7 +193,7 @@ def processData(data):
     carbrandsignal = False
     for word in tmp['text'].split():
         word = word.lower()
-        if wordin carBrandLower:
+        if word in carBrandLower:
             carbrandsignal = True
             tmp['carbrands'].append(carBrandmap[word])
             if word == 'car' or word == 'cars':
