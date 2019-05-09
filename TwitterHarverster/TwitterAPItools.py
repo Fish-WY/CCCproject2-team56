@@ -180,25 +180,27 @@ def processData(data):
             tmp['hashtags'].append(tagentities['text'])
 
     tmp['cartags'] = []
+    cartagsignal = False
     for tag in ['car']:
         if tag in tmp['hashtags']:
             tmp['cartags'].append(tag)
     if tmp['cartags'] or tmp['text'].find('car') != -1:
-        postTweet(tmp,'cartags')
+        cartagsignal = True
+
 
     # check carbrands in text
     tmp['carbrands'] = []
-    signal = False
+    carbrandsignal = False
     for word in tmp['text'].split():
         if word.lower() in carBrandLower:
-            signal = True
+            carbrandsignal = True
             tmp['carbrands'].append(carBrandmap[word.lower()])
-    if not signal:
-        # print('no car brand inside')
-        return
 
-    print('---post one---')
-    postTweet(tmp,name = 'car')
+
+    #print('---post one---')
+    postTweet(tmp,name = 'twitter')
+    if carbrandsignal: postTweet(tmp,name = 'car')
+    if cartagsignal: postTweet(tmp,'cartags')
 
 class listener(StreamListener):
 

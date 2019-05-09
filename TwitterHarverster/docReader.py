@@ -15,8 +15,8 @@ for year in range(2014,2020):
         print('start file',fname)
         print('total tweets',total)
         try:
-            f = open('/data/'+fname,'r',encoding='UTF-8')
-            #f = open('./historytweets/perth2016.json', 'r', encoding='UTF-8')
+            #f = open('/data/'+fname,'r',encoding='UTF-8')
+            f = open('./historytweets/perth2016.json', 'r', encoding='UTF-8')
 
             print(f.readline())
 

@@ -55,7 +55,7 @@ def postTweets(tweets, name = dbname):
 
 
 
-def getViewResult(dbname = 'trash', ddocID = '_design/car' , viewID = 'byCity'):
+def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'test'):
     doc = client[dbname].get_design_document(ddocID)
     pprint(doc)
     view = doc.get_view(viewID)
