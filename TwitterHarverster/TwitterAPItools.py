@@ -201,9 +201,9 @@ def processData(data):
 
 
     #print('---post one---')
-    postTweet(tmp,name = 'twitter')
+    #postTweet(tmp,name = 'twitter')
     if carbrandsignal: postTweet(tmp,name = 'car')
-    if cartagsignal: postTweet(tmp,'cartags')
+    #if cartagsignal: postTweet(tmp,'cartags')
 
 class listener(StreamListener):
 

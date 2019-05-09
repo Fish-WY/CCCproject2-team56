@@ -47,7 +47,6 @@ if len(sys.argv) >= 2:
     # fname = city + year + '.json'
     fname = sys.argv[1]
     readDoc(fname)
-
 else:
     for year in range(2016,2020):
         year = str(year)

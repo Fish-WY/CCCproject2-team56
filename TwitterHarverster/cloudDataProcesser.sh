@@ -9,7 +9,8 @@ do
     for city in "${cities[@]}"
     do
         echo ${city}${year}.json
-        echo 'start_key=["${city}",${year},1,1]'
+        a='start_key=["'${city}'",'${year}',1,1]'
+        echo $a
 
         curl "http://45.113.232.90/couchdbro/twitter/_design/twitter/_view/summary" \
         -G \
@@ -21,14 +22,11 @@ do
         -o /data/${city}${year}.json
 
         echo start docReader ${city}${year}.json
-
         python3 docReader.py ${city}${year}.json 1>docout.txt 2>docerror.txt
 
         # nohup python3 docReader.py 1>docout.txt 2>docerror.txt &
         rm ${city}${year}.json
-
     done
-
 done
 
 
