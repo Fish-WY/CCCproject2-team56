@@ -41,22 +41,22 @@ def readDoc(fname):
         pass
 
 
-if len(sys.argv) >= 3:
-    city = sys.argv[1]
-    # target couch database name
-    year = sys.argv[2]
-    fname = city + year + '.json'
+if len(sys.argv) >= 2:
+    # city = sys.argv[1]
+    # year = sys.argv[2]
+    # fname = city + year + '.json'
+    fname = sys.argv[1]
     readDoc(fname)
 
+else:
+    for year in range(2016,2020):
+        year = str(year)
+        for city in ausCities[::-1]:
+            fname = city + year + '.json'
+            print('start file',fname)
+            print('total tweets',total)
 
-for year in range(2016,2020):
-    year = str(year)
-    for city in ausCities[::-1]:
-        fname = city + year + '.json'
-        print('start file',fname)
-        print('total tweets',total)
-
-        readDoc(fname)
+            readDoc(fname)
 
 print('docReader  finish!!!')
 print('total tweets',total)

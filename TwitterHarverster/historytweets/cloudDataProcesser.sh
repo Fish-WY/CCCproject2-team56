@@ -10,10 +10,16 @@ do
     do
         echo ${city}${year}.json
 
-
-
-
-
+        curl "http://45.113.232.90/couchdbro/twitter/_design/twitter/_view/summary" \
+        -G \
+        --data-urlencode 'start_key=["adelaide",2016,1,1]' \
+        --data-urlencode 'end_key=["adelaide",2017,1,31]' \
+        --data-urlencode 'reduce=false' \
+        --data-urlencode 'include_docs=true' \
+        --user "readonly:ween7ighai9gahR6" \
+        -o /data/${city}${year}.json
+        echo start docReader ${city}${year}.json
+        python3 docReader.py ${city}${year}.json 1>docout.txt 2>docerror.txt &
 
         # nohup python3 docReader.py 1>docout.txt 2>docerror.txt &
         rm ${city}${year}.json
