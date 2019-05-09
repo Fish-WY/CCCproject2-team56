@@ -152,10 +152,10 @@ def processData(data):
     else: return
 
     # extract region
-    if tmp['geo'] != None:
+    if tmp['geo'] or tmp['coordinates']:
         y,x = tmp['geo']['coordinates']
         tmp['where'].append(getRegion([x,y]))
-    elif tmp['coordinates'] != None:
+    elif tmp['coordinates']:
         tmp['where'].append(getRegion(tmp['coordinates']['coordinates']))
     else:
         tmp['where'].append(random.choice(regionMap[tmp['where'][0]]))
