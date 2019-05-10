@@ -77,7 +77,7 @@ def Tgeo(geo = ''):
 
 # process StreamListener data by carbrand
 # extract useful info and compute sentiment parameter
-def processData(data, onlycarbrand = True):
+def processData(data, onlycarbrand = False):
     #print(type(data))
     if isinstance(data,dict):
         if 'doc' in data:
