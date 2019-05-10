@@ -14,8 +14,8 @@ creatDB('car')
 def readDoc(fname):
     global total
     try:
-        f = open('/data/' + fname, 'r', encoding='UTF-8')
-        # f = open('./historytweets/perth2016.json', 'r', encoding='UTF-8')
+        #f = open('/data/' + fname, 'r', encoding='UTF-8')
+        f = open('./historytweets/' + fname, 'r', encoding='UTF-8')
 
         print(f.readline())
 

@@ -192,19 +192,19 @@ def processData(data, onlycarbrand = True):
         for tagentities in raw['entities']['hashtags']:
             tmp['hashtags'].append(tagentities['text'])
 
-    tmp['cartags'] = []
-    cartagsignal = False
-    for tag in ['car']:
-        if tag in tmp['hashtags']:
-            tmp['cartags'].append(tag)
-    if tmp['cartags']:
-        cartagsignal = True
+    # tmp['cartags'] = []
+    # cartagsignal = False
+    # for tag in ['car']:
+    #     if tag in tmp['hashtags']:
+    #         tmp['cartags'].append(tag)
+    # if tmp['cartags']:
+    #     cartagsignal = True
 
 
 
     #print('---post one---')
-    #postTweet(tmp,name = 'twitter')
-    if carbrandsignal: postTweet(tmp,name = 'car')
+    postTweet(tmp,name = 'twitter')
+    #if carbrandsignal: postTweet(tmp,name = 'car')
     #if cartagsignal: postTweet(tmp,'cartags')
 
 class listener(StreamListener):
