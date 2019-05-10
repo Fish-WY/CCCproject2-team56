@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Place Details</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/7.1.1/highcharts.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <meta charset="utf-8">
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+    #map {
+      height: 100%;
+    }
+
+    .chartbox {
+      width: 650px;
+      height: 500px;
+      margin: 0 auto
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    #bar {
+      display: none;
+    }
+  </style>
+  <script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -33.866, lng: 151.196 },
+        zoom: 4
+      });
+
+      var request = {
+        placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+        fields: ['name', 'formatted_address', 'place_id', 'geometry']
+      };
+
+      var infowindow = new google.maps.InfoWindow();
+
+      var marker = new google.maps.Marker({
+        position: { lat: -33.866, lng: 151.196 },
+        map: map,
+
+      });
+      var content = document.getElementById('bar')
+      google.maps.event.addListener(marker, 'click', function () {
+        barchart()
+        document.getElementById('bar').style.display = 'block'
+        infowindow.setContent(content);
+        infowindow.open(map, this);
+      });
+
+
+    }
+
+    function barchart() {
+      $(document).ready(function () {
+        var chart = {
+          type: 'column',
+          backgroundColor: 'rgba(255,255,255,0.5)'
+        };
+        var title = {
+          text: 'Income of top 10 cities in Australia'
+        };
+        var subtitle = {
+          text: 'Source: Aurin'
+        };
+        var xAxis = {
+          categories: [1, 2, 3],
+          crosshair: true
+        };
+        var yAxis = {
+          min: 0,
+          title: {
+            text: 'number of people'
+          }
+        };
+
+        var tooltip = {
+          headerFormat: '<span style="font-size:12px">{point.key}</span><table>',
+          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0"><b>{point.y:.f} people</b></td></tr>',
+          footerFormat: '</table>',
+          shared: true,
+          useHTML: true
+        };
+
+        var plotOptions = {
+          column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+          }
+        };
+
+        var credits = {
+          enabled: false
+        };
+
+        var series = [{
+          name: '3500-3999',
+          data: [1, 2, 3]
+        }
+        ];
+
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.subtitle = subtitle;
+        json.tooltip = tooltip;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;
+        json.series = series;
+        json.plotOptions = plotOptions;
+        json.credits = credits;
+        $('#bar').highcharts(json);
+
+      });
+
+    }
+  </script>
+</head>
+
+<body>
+  <div id="bar" class="chartbox"></div>
+  <div id="map"></div>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEryg2gOGvCcRuj1eBOCwuDfHMy8DrmCc&callback=initMap"></script>
+
+</body>
+
+</html>
