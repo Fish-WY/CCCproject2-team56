@@ -198,15 +198,13 @@ carBrandmap ={
  'volvo': 'volvo'}
 
 
-URLquery = '%27lamborghini%27%20OR%20%27skoda%27%20OR%20%27land rover%27%20OR%20%27foton%27%20OR%20%27audi%27%20OR%20%27mclaren%27%20OR%20%27alfa%20romeo%27%20OR%20%27mitsubishi%27%20OR%20%27ldv%27%20OR%20%27bentley%27%20OR%20%27suzuki%27%20OR%20%27daewoo%27%20OR%20%27great%20wall%27%20OR%20%27ford%27%20OR%20%27mazda%27%20OR%20%27daihatsu%27%20OR%20%27infiniti%27%20OR%20%27renault%27%20OR%20%27chevrolet%27%20OR%20%27toyotavolkswagen%27%20OR%20%27rolls-royce%27%20OR%20%27acura%27%20OR%20%27mini%27%20OR%20%27fiat%27%20OR%20%27lotus%27%20OR%20%27lexus%27%20OR%20%27holden%27%20OR%20%27tata%27%20OR%20%27jeep%27%20OR%20%27porsche%27%20OR%20%27hyundai%27%20OR%20%27abarth%27%20OR%20%27hsv%27%20OR%20%27jaguar%27%20OR%20%27isuzu%27%20OR%20%27peugeot%27%20OR%20%27honda%27%20OR%20%27dodgeferrari%27%20OR%20%27ssangyong%27%20OR%20%27kia%27%20OR%20%27subaru%27%20OR%20%27nissan%27%20OR%20%27alpina%27%20OR%20%27haval%27%20OR%20%27mercedes%20benz%27%20OR%20%27chrysler%27%20OR%20%27ram%27%20OR%20%27volvo%27%20OR%20%27aston%20martin%27%20OR%20%27mg%27%20OR%20%27maserati%27%20OR%20%27tesla%27%20OR%20%27mahindra%27%20OR%20%27citroen%27%20OR%20%27bmw%27'
-
-
+URLquery = 'lexus%20OR%20mercedes%20OR%20skoda%20OR%20citroen%20OR%20alpina%20OR%20martin%20OR%20royce%20OR%20porsche%20OR%20subaru%20OR%20ford%20OR%20nissan%20OR%20holden%20OR%20ldv%20OR%20lamborghini%20OR%20infiniti%20OR%20mg%20OR%20suzuki%20OR%20tesla%20OR%20dodgeferrari%20OR%20toyotavolkswagen%20OR%20wall%20OR%20isuzu%20OR%20bentley%20OR%20mazda%20OR%20volvo%20OR%20daihatsu%20OR%20renault%20OR%20foton%20OR%20mahindra%20OR%20mitsubishi%20OR%20jeep%20OR%20maserati%20OR%20lotus%20OR%20audi%20OR%20daewoo%20OR%20acura%20OR%20chevrolet%20OR%20romeo%20OR%20jaguar%20OR%20bmw%20OR%20ram%20OR%20tata%20OR%20peugeot%20OR%20honda%20OR%20ssangyong%20OR%20mini%20OR%20mclaren%20OR%20hyundai%20OR%20chrysler%20OR%20fiat%20OR%20abarth%20OR%20hsv%20OR%20landr%20OR%20benz%20OR%20kia%20OR%20haval'
 
 if __name__ == '__main__':
     ans = ''
     for c in carBrandLower:
-        ans = ans+ '%20OR%20'+ '%27'+c+'%27'
+        ans = ans+ '%20OR%20'+c
     print(ans)
 
-    carBrandmap = {i:i for i in carBrandLower}
-    pprint(carBrandmap)
+    # carBrandmap = {i:i for i in carBrandLower}
+    # pprint(carBrandmap)

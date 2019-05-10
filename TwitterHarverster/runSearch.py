@@ -23,7 +23,7 @@ def Tsearch(query = carBrand,lang = "en",geo = geoNode['sydney'],dbname = 'car')
             since_id = current_id[city]
             print('-'*15,city,since_id,'-'*15)
             try:
-                results = api.search(q='car',geocode=geocode,lang = lang,include_entities = True,since_id = since_id,result_type='mixed')
+                results = api.search(q='car%20OR%20java',geocode=geocode,lang = lang,include_entities = True,since_id = since_id,result_type='mixed')
                 for r in results:
                     current_id[city] = max(current_id[city],r.id)
                     #print(r.text)
