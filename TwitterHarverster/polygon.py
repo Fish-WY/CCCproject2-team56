@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     position=[lng,lat]
 
-    (grid,twitterCount)=loadGrid("data.json")
+    (grid,twitterCount)=loadGrid("./data.json")
     for region in grid:
         name=region["name"]
         if isPoiWithinPoly(position, region["bound"]):
