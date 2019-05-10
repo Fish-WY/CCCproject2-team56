@@ -18,17 +18,14 @@ consumer_secret = kris_api['consumer_secret']
 access_token_key = kris_api['access_token']
 access_token_secret = kris_api['access_secret']
 
+# developer verification and get API interface
+# Create authentication objects
 auth = tweepy.OAuthHandler( consumer_key, consumer_secret )
+# set access token & access secret
 auth.set_access_token( access_token_key, access_token_secret )
+# Pass in the auth parameter to create the API object
 api = tweepy.API( auth,wait_on_rate_limit=True,wait_on_rate_limit_notify=True )
 
-# connect to Twitter API
-# Create authentication objects
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-# set access token & access secret
-auth.set_access_token(access_token_key, access_token_secret)
-# Pass in the auth parameter to create the API object
-api = tweepy.API(auth)
 print('Twitter API created')
 
 '''
@@ -182,15 +179,15 @@ def processData(data, onlycarbrand = False):
 
 
 
-def getOne():
-    tweets = Tsearch()
-    return tweets[0]
+# def getOne():
+#     tweets = Tsearch()
+#     return tweets[0]
 
 
 if __name__ == '__main__':
     print('___________Twitter API test____________')
 
-    Tsearch()
+    #Tsearch()
 
 
 

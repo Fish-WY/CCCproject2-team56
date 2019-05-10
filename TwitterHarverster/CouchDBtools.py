@@ -6,7 +6,7 @@ from pprint import pprint
 USERNAME = 'admin'
 PASSWORD = 'admin'
 
-#http://172.26.37.222:5984/_utils/#database/history_tweet/_design/day_data_view/_view/day_view
+# http://172.26.37.222:5984/_utils/#database/history_tweet/_design/day_data_view/_view/day_view
 client = CouchDB(USERNAME, PASSWORD, url='http://45.113.235.214:5985', connect=True)
 # Perform client tasks...
 session = client.session()
