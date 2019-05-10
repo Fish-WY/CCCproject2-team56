@@ -6,6 +6,7 @@ from pprint import pprint
 USERNAME = 'admin'
 PASSWORD = 'admin'
 
+#http://172.26.37.222:5984/_utils/#database/history_tweet/_design/day_data_view/_view/day_view
 client = CouchDB(USERNAME, PASSWORD, url='http://45.113.235.214:5985', connect=True)
 # Perform client tasks...
 session = client.session()
@@ -55,7 +56,7 @@ def postTweets(tweets, name = dbname):
 
 
 
-def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'test'):
+def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'byCity'):
     doc = client[dbname].get_design_document(ddocID)
     pprint(doc)
     view = doc.get_view(viewID)
