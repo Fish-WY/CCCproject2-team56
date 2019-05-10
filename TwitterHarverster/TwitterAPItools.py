@@ -77,7 +77,7 @@ def Tgeo(geo = ''):
 
 # process StreamListener data by carbrand
 # extract useful info and compute sentiment parameter
-def processData(data):
+def processData(data, onlycarbrand = True):
     #print(type(data))
     if isinstance(data,dict):
         if 'doc' in data:
@@ -106,6 +106,19 @@ def processData(data):
 
     #print(tmp['text'])
 
+    # check carbrands in text
+    tmp['carbrands'] = []
+    carbrandsignal = False
+    for word in tmp['text'].split():
+        word = word.lower()
+        if word in carBrandLower:
+            carbrandsignal = True
+            tmp['carbrands'].append(carBrandmap[word])
+            if word == 'car' or word == 'cars':
+                cartagsignal = True
+    else:
+        if onlycarbrand and carbrandsignal == False:
+            return
 
     # check media
     if 'extended_entities' in raw:
@@ -187,17 +200,6 @@ def processData(data):
     if tmp['cartags']:
         cartagsignal = True
 
-
-    # check carbrands in text
-    tmp['carbrands'] = []
-    carbrandsignal = False
-    for word in tmp['text'].split():
-        word = word.lower()
-        if word in carBrandLower:
-            carbrandsignal = True
-            tmp['carbrands'].append(carBrandmap[word])
-            if word == 'car' or word == 'cars':
-                cartagsignal =True
 
 
     #print('---post one---')
