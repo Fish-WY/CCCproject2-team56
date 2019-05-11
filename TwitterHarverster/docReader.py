@@ -7,13 +7,13 @@ import sys
 #read by line
 total = 0
 fname = './historytweets/adelaide2015.json'
-creatDB('car')
 
 
 
 def readDoc(fname):
     print('docReader.py read',fname)
     global total
+    print('total tweets', total)
     try:
         f = open('/data/' + fname, 'r', encoding='UTF-8')
         #f = open('./historytweets/' + fname, 'r', encoding='UTF-8')
@@ -54,8 +54,6 @@ else:
         year = str(year)
         for city in ausCities:
             fname = city + year + '.json'
-            print('start file',fname)
-            print('total tweets',total)
 
             readDoc(fname)
 
