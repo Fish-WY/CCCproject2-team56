@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 # (2014 2015 2016 2017 2018 2019)
-years=(2014 2017 2018 2019)
+years=(2014 2017)
 cities=(adelaide brisbane canberra hobart melbourne perth sydney)
 #（1 2 3 4 5 6 7 8 9 10 11 12)
-months=(2 3)
+months=(1 2 3 4 5 6 7 8 9 10 11 12)
 
 for year in "${years[@]}"
 do
-    for city in "${cities[@]}"
+    for month in "${months[@]}"
     do
-        for month in "${months[@]}"
+        for city in "${cities[@]}"
         do
             echo 'download begin'
             echo ${city}${year}${month}.json
