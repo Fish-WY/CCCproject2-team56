@@ -12,6 +12,7 @@ creatDB('car')
 
 
 def readDoc(fname):
+    print('docReader.py read',fname)
     global total
     try:
         f = open('/data/' + fname, 'r', encoding='UTF-8')
