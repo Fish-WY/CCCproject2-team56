@@ -28,7 +28,7 @@ do
             python3 docReader.py ${city}${year}${month}.json 1>docout.txt 2>docerror.txt
 
             # nohup python3 docReader.py 1>docout.txt 2>docerror.txt &
-            rm -f /data/${city}${year}${month}.json
+            sudo rm -f /data/${city}${year}${month}.json
 
         done
 
