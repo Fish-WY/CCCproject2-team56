@@ -4,15 +4,15 @@
 years=(2014 2017 2018 2019)
 cities=(adelaide brisbane canberra hobart melbourne perth sydney)
 #（1 2 3 4 5 6 7 8 9 10 11 12)
-month=(2 3 4 5 6)
+months=(2 3 4 5 6)
 
 for year in "${years[@]}"
 do
     for city in "${cities[@]}"
     do
-        for month in "${cities[@]}"
+        for month in "${months[@]}"
         do
-             echo ${city}${year}.json
+            echo ${city}${year}.json
             a='start_key=["'${city}'",'${year}','${month}',1]'
             echo $a
 
