@@ -15,7 +15,7 @@ do
             echo 'download begin'
             echo ${city}${year}${month}.json
 
-            curl "http://45.113.232.90/couchdbro/twitter/_design/twitter/_view/summary" \
+            sudo curl "http://45.113.232.90/couchdbro/twitter/_design/twitter/_view/summary" \
             -G \
             --data-urlencode 'start_key=["'${city}'",'${year}','${month}',1]' \
             --data-urlencode 'end_key=["'${city}'",'${year}','${month}',31]' \
