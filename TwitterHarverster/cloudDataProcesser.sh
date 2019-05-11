@@ -4,7 +4,7 @@
 years=(2014 2017 2018 2019)
 cities=(adelaide brisbane canberra hobart melbourne perth sydney)
 #（1 2 3 4 5 6 7 8 9 10 11 12)
-months=(2 3 4 5 6)
+months=(2 3)
 
 for year in "${years[@]}"
 do
