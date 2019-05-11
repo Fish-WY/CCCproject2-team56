@@ -12,9 +12,8 @@ do
     do
         for month in "${months[@]}"
         do
-            echo ${city}${year}.json
-            a='start_key=["'${city}'",'${year}','${month}',1]'
-            echo $a
+            echo 'download begin'
+            echo ${city}${year}${month}.json
 
             curl "http://45.113.232.90/couchdbro/twitter/_design/twitter/_view/summary" \
             -G \
