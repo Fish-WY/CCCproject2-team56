@@ -174,7 +174,7 @@ def processData(data, onlycarbrand = False):
 
     #print('---post one---')
     postTweet(tmp,name = 'twitter')
-    #if carbrandsignal: postTweet(tmp,name = 'car')
+    if carbrandsignal: postTweet(tmp,name = 'car')
     #if cartagsignal: postTweet(tmp,'cartags')
 
 
