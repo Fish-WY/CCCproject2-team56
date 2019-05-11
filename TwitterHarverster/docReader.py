@@ -14,8 +14,8 @@ creatDB('car')
 def readDoc(fname):
     global total
     try:
-        #f = open('/data/' + fname, 'r', encoding='UTF-8')
-        f = open('./historytweets/' + fname, 'r', encoding='UTF-8')
+        f = open('/data/' + fname, 'r', encoding='UTF-8')
+        #f = open('./historytweets/' + fname, 'r', encoding='UTF-8')
 
         print(f.readline())
 
@@ -51,8 +51,7 @@ if len(sys.argv) > 2:
 else:
     for year in range(2016,2020):
         year = str(year)
-        #for city in ausCities[::-1]:
-        for city in ['adelaide','brisbane']:
+        for city in ausCities:
             fname = city + year + '.json'
             print('start file',fname)
             print('total tweets',total)
