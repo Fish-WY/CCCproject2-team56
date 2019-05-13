@@ -122,12 +122,15 @@ def processData(data, onlycarbrand = False):
     elif raw['place']:
         # get city from API
         for city in ausCities:
-            if raw['place']['full_name'].find(city) != -1:
+            if raw['place']['full_name'].lower().find(city) != -1:
                 tmp['where'] = [city]
                 break
         else:
+            #print("no city")
             return
-    else: return
+    else:
+        #print('no city')
+        return
 
     # extract region
     if tmp['geo'] or tmp['coordinates']:
