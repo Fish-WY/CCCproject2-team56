@@ -29,5 +29,22 @@ def beginStream(dbname,query = carBrand):
 
 
 if __name__ == '__main__' :
+    if len(sys.argv) > 1:
+        # Variables that contains the user credentials to access Twitter API
+        k = int(sys.argv[1])
+        consumer_key = machine[k]['consumer_key']
+        consumer_secret = machine[k]['consumer_secret']
+        access_token_key = machine[k]['access_token']
+        access_token_secret = machine[k]['access_secret']
+
+        # developer verification and get API interface
+        # Create authentication objects
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        # set access token & access secret
+        auth.set_access_token(access_token_key, access_token_secret)
+        # Pass in the auth parameter to create the API object
+        global api
+        api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+
     print('___________Twitter Stream API begin______________')
     beginStream(dbname)

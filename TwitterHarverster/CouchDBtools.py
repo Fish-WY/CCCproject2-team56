@@ -7,7 +7,7 @@ USERNAME = 'admin'
 PASSWORD = 'admin'
 
 # http://172.26.37.222:5984/_utils/#database/history_tweet/_design/day_data_view/_view/day_view
-client = CouchDB(USERNAME, PASSWORD, url='http://45.113.235.214:5985', connect=True)
+client = CouchDB(USERNAME, PASSWORD, url='http://10.12.225.181:5984', connect=True)
 # Perform client tasks...
 session = client.session()
 print('Username: {0}'.format(session['userCtx']['name']))
@@ -76,7 +76,6 @@ def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'superCar'):
 
 
 if __name__ == '__main__':
-    viewID = 'newview'
     getViewResult()
 
 

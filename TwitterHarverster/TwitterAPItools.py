@@ -12,6 +12,7 @@ import random
 
 analyzer = SentimentIntensityAnalyzer()
 
+
 # Variables that contains the user credentials to access Twitter API
 consumer_key = kris_api['consumer_key']
 consumer_secret = kris_api['consumer_secret']
@@ -33,12 +34,6 @@ normal API return an object  status._json >> str
 but stream API return a string  
 so there is a bit different in there
 '''
-
-def showMytweets():
-    public_tweets = api.home_timeline()
-    for tweet in public_tweets:
-       print(tweet.text)
-
 
 
 def Tgeo(geo = ''):

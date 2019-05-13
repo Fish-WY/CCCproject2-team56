@@ -25,8 +25,7 @@ do
             -o /data/${city}${year}${month}.json
 
             echo start docReader ${city}${year}${month}.json
-            python3 docReader.py ${city}${year}${month}.json
-            #1>docout.txt 2>docerror.txt
+            python3 docReader.py ${city}${year}${month}.json 1>docout.txt 2>docerror.txt
 
             # nohup python3 docReader.py 1>docout.txt 2>docerror.txt &
             sudo rm -f /data/${city}${year}${month}.json
