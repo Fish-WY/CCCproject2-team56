@@ -72,6 +72,7 @@ def pick_region(reg):
 
 def pick_brand(reg):
     result = linkDB.region_brand(region=reg)
+    result = sorted(result, key=lambda e: e["vader"], reverse=False)
     return result
 
 def income_drilldown():
