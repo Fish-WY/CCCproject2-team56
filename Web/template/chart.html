@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/7.1.1/highcharts.js"></script>
+    <script src="http://cdn.hcharts.cn/highcharts/modules/drilldown.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script language="JavaScript">
+
+        //js for get json data
+        $(document).ready(apply());
+        setInterval(update, 1000);
+        var num = 0;
+        var change = 0;
+
+
+        function update() {
+            $.post("/chart", { message: "update" }, function (data, status) {
+                if (status == "success") {
+                    //alert(data);
+                    var data1 = eval("(" + data + ")");
+                    if (num ==0)
+                        change = 0;
+                    else
+                        change = data1["res"]-num;
+                    num = data1["res"];
+                    document.getElementById('count').textContent = num;
+
+                }
+                else {
+                    alert("Ajax error");
+                }
+            });
+        }
+
+        function apply() {
+
+            $.post("/chart", { message: "chart" }, function (data, status) {
+                if (status == "success") {
+                    //alert(data);
+                    var data0 = JSON.stringify(data)
+                    //alert(data0)
+                    var data1 = eval("(" + data + ")")
+                    //alert(JSON.stringify(data1))
+                    var res = data1["income_drill"]
+                    //alert(JSON.stringify(res))
+
+                    var res1 = data1["income_supercar"]
+                    //alert(JSON.stringify(res1))
+
+
+                    //$("#result").html(JSON.stringify(city));
+                    combine(res1)
+                    bar(res)
+                    realtime()
+                }
+                else {
+                    alert("Ajax error");
+                }
+            });
+
+        };
+
+        // js for bar chart
+        function bar(res) {
+
+            data1 = []
+            for (var i = 0; i < res.length; i++) {
+                map = {};
+                map["name"] = res[i].name;
+                map["y"] = res[i].hightotal;
+                map["drilldown"] = res[i].name;
+                data1[i] = map;
+            }
+
+            drill = []
+            for (var i = 0; i < res.length; i++) {
+                map = {}
+                map["type"] = 'pie'
+                map["id"] = res[i].name
+                map["data"] = []
+                for (var j = 0; j < res[i].region.length; j++) {
+                    elem = []
+                    elem[0] = res[i].region[j].name
+                    elem[1] = res[i].region[j].high
+
+                    map["data"][j] = elem
+                }
+                drill[i] = map
+            }
+
+            var chart = {
+                type: 'bar',
+                backgroundColor: 'rgba(255,255,255,0.1)'
+            };
+            var title = {
+                text: ' High Income people (over 4000 Weekly)',
+                style: {
+                    color: 'rgb(255,255,255)',
+                    fontSize: '10px'
+                }
+
+            };
+            var subtitle = {
+                text: 'Source: Aurin'
+            };
+            var xAxis = {
+                type: 'category',
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
+            };
+            var yAxis = {
+                min: 0,
+                title: {
+                    text: 'number of people'
+                },
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
+            };
+
+            var tooltip = {
+                headerFormat: '<span style="font-size:12px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0"><b>{point.y:.f} people</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            };
+
+            var plotOptions = {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            };
+
+            var credits = {
+                enabled: false
+            };
+
+            var series = [{
+                name: 'High income',
+                colorByPoint: true,
+                data: data1
+            }
+            ];
+
+            var drilldown = {
+                series: drill
+            }
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.subtitle = subtitle;
+            json.tooltip = tooltip;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            json.credits = credits;
+            json.drilldown = drilldown;
+            $('#bar').highcharts(json);
+        }
+
+        //js for combine chart
+        function combine(res1) {
+
+            var region = []
+            var vader = []
+            var income = []
+
+            for (var i = 0; i < res1.length; i++) {
+                region[i] = res1[i].region
+                vader[i] = res1[i].vader
+                income[i] = res1[i].people
+            }
+
+            var chart = {
+                type: 'column',
+                backgroundColor: 'rgba(255,255,255,0.1)'
+            };
+            var subtitle = {
+                text: 'Source: https://portal.aurin.org.au AND Twitter'
+            };
+            var title = {
+                text: 'Region data of supercar vader and high income people',
+                style: {
+                    color: 'rgb(255,255,255)'
+                }
+            };
+            var xAxis = {
+                categories: region,
+                crosshair: true,
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
+            };
+            var credits = {
+                enabled: false
+            }
+
+            var yAxis = [{
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                title: {
+                    text: 'vader of supercar',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                }
+            }, {
+                title: {
+                    text: 'high income people',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                opposite: true
+            }];
+
+            var tooltip = {
+                shared: true
+            };
+            var legend = {
+                layout: 'vertical',
+                align: 'left',
+                x: 60,
+                verticalAlign: 'top',
+                y: 10,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || 'rgba(255,255,255,0.2)'
+            };
+
+            var series = [{
+                name: 'vader of supercar',
+                type: 'spline',
+                yAxis: 0,
+                data: vader,
+                color: Highcharts.getOptions().colors[2]
+            }, {
+                name: 'people with high income',
+                type: 'column',
+                yAxis: 1,
+                data: income,
+                colorByPoint: true
+
+            }
+            ];
+
+
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.tooltip = tooltip;
+            json.legend = legend;
+            json.credits = credits;
+            json.series = series;
+            $('#combine').highcharts(json);
+
+
+        }
+
+
+        //js for pie chart
+        function realtime() {
+            var chart = {
+                type: 'spline',
+                animation: Highcharts.svg, // don't animate in IE < IE 10.
+                marginRight: 10,
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                events: {
+                    load: function () {
+                        // set up the updating of the chart each second
+                        var series = this.series[0];
+                        setInterval(function () {
+                            var x = (new Date()).getTime(), // current time
+                                y = change;
+                            series.addPoint([x, y], true, true);
+                        }, 1000);
+                    }
+                }
+            };
+            var title = {
+                text: 'Real-time Twitter data',
+                style: {
+                    color: 'rgb(255,255,255)',
+                    fontSize: '10px'
+                }
+            };
+            var xAxis = {
+                type: 'datetime',
+                tickPixelInterval: 150
+            };
+            var yAxis = {
+                title: {
+                    text: 'number'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            };
+            var tooltip = {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                        Highcharts.numberFormat(this.y, 2);
+                }
+            };
+            var plotOptions = {
+                area: {
+                    pointStart: 1940,
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle',
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                }
+            };
+            var legend = {
+                enabled: false
+            };
+            var exporting = {
+                enabled: false
+            };
+            var series = [{
+                name: 'Tweet Num',
+                data: (function () {
+                    // generate an array of random data
+                    var data = [], time = (new Date()).getTime(), i;
+                    for (i = -19; i <= 0; i += 1) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: change
+                        });
+                    }
+                    return data;
+                }())
+            }];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.tooltip = tooltip;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.legend = legend;
+            json.exporting = exporting;
+            json.series = series;
+            json.plotOptions = plotOptions;
+
+
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
+            $('#realtime').highcharts(json);
+        }
+
+    </script>
+    <title>Show Chart</title>
+
+    <style type="text/css">
+        .mainbox {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .mainbox>img {
+            width: 100%;
+            height: 100%;
+            border: 0px;
+        }
+
+        .bar {
+            position: fixed;
+            left: 70%;
+            top: 10%
+        }
+
+        .combine {
+            position: fixed;
+            left: 1%;
+            top: 58%
+        }
+
+        .realtime {
+            position: fixed;
+            left: 2%;
+            top: 10%
+        }
+
+        .total {
+            position: fixed;
+            left: 40%;
+            top: 12%
+        }
+
+        .count {
+            position: fixed;
+            left: 48%;
+            top: 42%
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="mainbox">
+        <img class="img-fluid" src="/static/picture/ground.jpeg" />
+    </div>
+
+
+    <!--Navbar-->
+    <div class="container floor-nav">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation"
+            style="background-color: rgba(252, 252, 252, 0.2);">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Pride</a>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Home Page</a></li>
+                        <li><a href="/chart">Chart</a></li>
+                        <li><a href="/map">Map</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="total"><h3 align="center" style="color: aliceblue"> Total number of tweets processed</h3></div>
+    <div class="count" id="count" style="color: aquamarine;font-size: 30px"></div>
+
+
+    <!--Bar Chart-->
+    <div id="bar" class="bar" style="width: 400px; height: 300px;min-font-size: 9; margin: 0 auto"></div>
+    <div id="combine" class="combine" style="width: 1400px; min-height:300px;min-font-size: 9; margin: 0 auto"></div>
+    <div id="realtime" class="realtime" style="width: 450px; min-height:300px;min-font-size: 9; margin: 0 auto"></div>
+
+
+</body>
+
+</html>
