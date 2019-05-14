@@ -22,13 +22,21 @@ class ChartHandler(tornado.web.RequestHandler):
         self.render('chart.html')
 
     def post(self):
-        income_drill = deal.income_drilldown()
-        map = {}
-        map["income_drill"] = income_drill
+        command = self.get_argument('message')
+        if command == "chart":
 
-        income_supercar = deal.income_supercar()
-        map["income_supercar"] = income_supercar
-        self.write(json.dumps(map))
+            income_drill = deal.income_drilldown()
+            map = {}
+            map["income_drill"] = income_drill
+
+            income_supercar = deal.income_supercar()
+            map["income_supercar"] = income_supercar
+            self.write(json.dumps(map))
+        if command == "update":
+            res = deal.update_tweet()
+            map={}
+            map["res"] = res
+            self.write(json.dumps(map))
 
 
 class MapHandler(tornado.web.RequestHandler):
@@ -37,9 +45,13 @@ class MapHandler(tornado.web.RequestHandler):
 
     def post(self):
         region = self.get_argument('message')
+        print(region)
         result = deal.pick_region(region)
         map = {}
-        map["res"] = result
+        map["hour"] = result
+        brand_vader = deal.pick_brand(region)
+        map["brand"] = brand_vader
+        print(map)
         self.write(json.dumps(map))
 
 

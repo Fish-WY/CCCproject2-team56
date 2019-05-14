@@ -8,15 +8,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/7.1.1/highcharts.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <title>Title</title>
+    <title>Show Map</title>
     <style>
         /* Always set the map height explicitly to define the size of the div
          * element that contains the map. */
         html,
         body,
+
         #map {
-            height: 100%;
+            height: 600px;
+            width: 700px;
             margin: 0;
+            top:22%;
+            left: 10%;
             padding: 0;
             overflow: hidden;
         }
@@ -34,28 +38,19 @@
             border: rgb(229, 229, 229) 1px solid;
         }
 
-        .chartbox {
-            width: 650px;
-            height: 500px;
-            margin: 0 auto
-        }
-
         /* Optional: Makes the sample page fill the window. */
-        #bar {
-            display: none;
-        }
 
         #controls {
-            top: 10px;
-            left: 110px;
+            top: 70px;
+            left: 70px;
             width: 360px;
             height: 45px;
         }
 
         /* Optional: Makes the sample page fill the window. */
         #data-box {
-            top: 10px;
-            left: 500px;
+            top: 50px;
+            left: 400px;
             height: 45px;
             line-height: 45px;
             display: none;
@@ -105,10 +100,61 @@
             font-size: 14px;
             width: 14px
         }
+
+        .mainbox {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .mainbox>img {
+            width: 100%;
+            height: 100%;
+            border: 0px;
+        }
+
+        .combine {
+            position:fixed;
+            left: 800px;
+            top: 80px
+        }
+
+        .bar {
+            position:fixed;
+            left: 800px;
+            top: 380px
+        }
+
     </style>
 </head>
 
 <body>
+    <div class="mainbox">
+        <img class="img-fluid" src="/static/picture/ground.jpeg" />
+    </div>
+
+    <!--Navbar-->
+    <div class="container floor-nav">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation"
+            style="background-color: rgba(252, 252, 252, 0.2);">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Pride</a>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Home Page</a></li>
+                        <li><a href="/chart">Chart</a></li>
+                        <li><a href="/map">Map</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
     <div id="controls" class="nicebox">
         <div id="legend">
             <div id="Min">min</div>
@@ -116,14 +162,19 @@
             <div id="Max">max</div>
         </div>
     </div>
-    <div id="data-box" class="nicebox">
+    <div id="data-box" class="nicebox" style="background-color: rgba(255,255,255,0.5)">
         <label id="data-label" for="data-value"></label>
         <span id="data-value"></span>
     </div>
-    <div id="chart" class="nicebox">hello</div>
+
+
 
 
     <div id='map'></div>
+    <div id="bar" class="bar" style="width: 550px; height: 250px;min-font-size: 9; margin: 0 auto"></div>
+    <div id="combine" class="combine" style="width: 550px; min-height:250px;min-font-size: 9; margin: 0 auto"></div>
+
+
     <script>
         var mapStyle = [{
             'stylers': [{ 'visibility': 'on' }]
@@ -143,7 +194,7 @@
         function initMap() {
             //barchart();
             map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: -28.344, lng: 137.036 },
+                center: { lat: -33.344, lng: 137.036 },
                 zoom: 4,
                 styles: mapStyle
             });
@@ -161,7 +212,7 @@
             //var GeoData= linkDB.get_data('aurin','bee6b09dce9b6deaa06a7040baa7eb80')
 
             map.data.loadGeoJson("/static/json/data.json", { idPropertyName: 'feature_name' });
-            infoWindow = new google.maps.InfoWindow;
+
         }
         function jsontest() {
             var url = 'http://45.113.233.252:8888/Envy/person.json'
@@ -255,8 +306,9 @@
 
                     var data1 = eval("(" + data + ")")
                     //alert(JSON.stringify(data1))
-                    var res = data1["res"]
-                    alert(JSON.stringify(res))
+                    var res = data1["hour"]
+                    //alert(JSON.stringify(res))
+                    var res1 = data1["brand"]
 
                     var time = []
                     var count = []
@@ -278,43 +330,11 @@
 
                         //infoWindow.close();
                         //infoWindow = new google.maps.InfoWindow;
-                        document.getElementById('chart').textContent = infoWindow;
                         //test(e)
-                        var o = document.body;
 
-                        var newbar = document.createElement("div");
-                        newbar.setAttribute("class", "chartbox");
-                        newbar.setAttribute("id", "bar");
+                        combine(time,count,score,region);
+                        barchart(res1,region);
 
-
-                        o.appendChild(newbar);
-                        combine(time,count,score);
-
-
-
-
-                        var position = e.latLng;
-                        //document.getElementById('chart').textContent =positiion;
-
-                        //var content=''hello''
-
-                        var content = document.getElementById('bar')
-
-                        //var content=document.getElementById("chart");
-
-                        //var content=$("#bar").clone(true);
-                        content.style.display = 'block'
-                        //document.getElementById('chart').textContent =content[0];
-
-                        //closeclick
-                        infoWindow.setContent(content);
-                        infoWindow.setPosition(position);
-                        infoWindow.open(map);
-                        infoWindow.addListener("closeclick", function () {
-                            document.getElementById('chart').textContent = 'close';
-                            //document.getElementById('bar').style.display='none'
-
-                        })
                     }
                     //barchart();
 
@@ -325,33 +345,26 @@
             });
         };
 
-        function test(e) {
-            var content = $("#bar").clone(true)
-            document.getElementById('chart').textContent = content[0];
-            var infoWindow = new google.maps.InfoWindow;
-            var position = e.latLng;
 
 
-            content[0].style.display = 'block'
 
-            infoWindow.setContent(content[0]);
-            infoWindow.setPosition(position);
+        function combine(time,count,score,reg) {
 
-            infoWindow.open(map);
-        }
-
-
-        function combine(time,count,score) {
-
+            //alert("recive")
             var chart = {
                 zoomType: 'xy',
-                backgroundColor: 'rgba(255,255,255,0.5)'
+                backgroundColor: 'rgba(255,255,255,0.2)'
             };
             var subtitle = {
-                text: 'Source: twitter'
+                text: reg
             };
             var title = {
-                text: 'tweets info'
+                text: 'Vader in different time',
+                style: {
+                    color: 'rgb(255,255,255)',
+                    fontSize: '10px'
+                }
+
             };
 
             var credits = {
@@ -359,32 +372,41 @@
             };
             var xAxis = {
                 categories: time,
-                crosshair: true
+                crosshair: true,
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
             };
             var yAxis = [{
                 labels: {
                     format: '{value} tweets',
                     style: {
-                        color: Highcharts.getOptions().colors[1]
+                        color: Highcharts.getOptions().colors[3]
                     }
                 },
                 title: {
                     text: 'count',
                     style: {
-                        color: Highcharts.getOptions().colors[1]
+                        color: Highcharts.getOptions().colors[3]
                     }
                 }
             }, {
                 title: {
-                    text: 'score',
+                    text: 'vader',
                     style: {
-                        color: Highcharts.getOptions().colors[7]
+                        color: Highcharts.getOptions().colors[2]
                     }
                 },
                 labels: {
                     format: '{value} vedar',
                     style: {
-                        color: Highcharts.getOptions().colors[7]
+                        color: Highcharts.getOptions().colors[2]
                     }
                 },
                 opposite: true
@@ -395,9 +417,9 @@
             var legend = {
                 layout: 'vertical',
                 align: 'left',
-                x: 120,
+                x: 90,
                 verticalAlign: 'top',
-                y: 50,
+                y: 10,
                 floating: true,
                 backgroundColor: 'rgba(255,255,255,0.5)'
             };
@@ -407,7 +429,6 @@
                 colorByPoint: true,
                 data: count,
                 yAxis: 0,
-                color: Highcharts.getOptions().colors[1],
                 tooltip: {
                     valueSuffix: ' people'
                 }
@@ -417,10 +438,7 @@
                 yAxis: 1,
                 //colorByPoint: true,
                 data: score,
-                color: Highcharts.getOptions().colors[7],
-                tooltip: {
-                    valueSuffix: ' people'
-                }
+                color: Highcharts.getOptions().colors[2],
 
             }
             ];
@@ -435,34 +453,83 @@
             json.tooltip = tooltip;
             json.legend = legend;
             json.series = series;
-            $('#bar').highcharts(json);
+            $('#combine').highcharts(json);
 
 
         }
 
-        function barchart(x, y) {
+        function barchart(res1,reg) {
+
+
+
+            brand = []
+            vader = []
+
+            for(var i=0;i<res1.length;i++){
+                brand[i] = res1[i]["brand"]
+                vader[i] = res1[i]["vader"]
+            }
+
+            //alert(JSON.stringify(brand))
+            //alert(JSON.stringify(vader))
+
             var chart = {
                 type: 'column',
-                backgroundColor: 'rgba(255,255,255,0.5)'
+                backgroundColor: 'rgba(255,255,255,0.2)',
             };
             var title = {
-                text: 'Score of all brands in current area'
+                text: 'Vader of all brands in '+reg,
+                style: {
+                    color: 'rgb(255,255,255)',
+                    fontSize: '10px'
+                }
             };
             var subtitle = {
                 text: 'Source: tweets'
+
             };
             var xAxis = {
-                categories: x
+                categories: brand,
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
             };
 
+            var yAxis = {
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
+            }
             var credits = {
                 enabled: false
+            };
+
+             var legend = {
+                layout: 'vertical',
+                align: 'left',
+                x: 50,
+                verticalAlign: 'top',
+                y: 20,
+                floating: true,
+                backgroundColor: 'rgba(255,255,255,0.5)'
             };
 
             var series = [{
                 name: 'brand score',
                 colorByPoint: true,
-                data: y
+                data: vader
             }
             ];
 
@@ -471,8 +538,10 @@
             json.title = title;
             json.subtitle = subtitle;
             json.xAxis = xAxis;
+            json.yAxis = yAxis;
             json.series = series;
             json.credits = credits;
+            json.legend = legend;
             $('#bar').highcharts(json);
         }
     </script>

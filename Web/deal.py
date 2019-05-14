@@ -45,7 +45,7 @@ regionMap = {
 
 
 def loadaurin():
-    aurindata = linkDB.get_aurindata('aurin','cd19601ff48fec927421d634e205006d')
+    aurindata = linkDB.get_aurindata('aurin','a914df0a1a387fa05e32061156001d3e')
 
     #print(aurindata)
     incomedata = []
@@ -65,18 +65,13 @@ def loadaurin():
     return incomedata
 
 def pick_region(reg):
-    count = linkDB.get_count(region=reg)
-    #print(count)
-    score = linkDB.get_score(region=reg)
-    result = []
-    for index in range(0,len(count)):
-        map={}
-        map["name"] = count[index]["time"]
-        map["count"] = count[index]["count"]
-        map["score"] = score[index]["score"]
-        result.append(map)
-    print(result)
 
+    result = linkDB.get_count_score(region=reg)
+
+    return result
+
+def pick_brand(reg):
+    result = linkDB.region_brand(region=reg)
     return result
 
 def income_drilldown():
@@ -130,9 +125,13 @@ def income_supercar():
             if income[i2]["name"] == vader[i1]["region"]:
                 vader[i1]["people"] = income[i2]["high"]
 
-    print(vader)
+    #print(vader)
     return vader
 
+
+def update_tweet():
+    res = linkDB.total_count()
+    return  res
 #income_supercar()
 
 #print(income_drilldown())
