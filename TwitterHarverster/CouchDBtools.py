@@ -8,7 +8,7 @@ PASSWORD = 'admin'
 
 # http://172.26.37.222:5984/_utils/#database/history_tweet/_design/day_data_view/_view/day_view
 client = CouchDB(USERNAME, PASSWORD, url='http://localhost:5984', connect=True)
-# Perform client tasks...
+# Perform client tasks...z
 session = client.session()
 print('Username: {0}'.format(session['userCtx']['name']))
 print('Databases: {0}'.format(client.all_dbs()))
@@ -64,7 +64,7 @@ def getViewResult(dbname = 'car', ddocID = '_design/car' , viewID = 'superCar'):
 
     print('-'*15+'view'+'-'*15)
     #pprint(view.result)
-    with view.custom_result(group_level = 2) as rslt:
+    with view.custom_result(group_level = 0) as rslt:
         pprint(rslt)
 
         for doc in rslt.all():

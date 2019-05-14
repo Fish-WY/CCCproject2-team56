@@ -1,0 +1,14 @@
+
+- hosts: dbserver
+  gather_facts: true
+
+  roles:
+    - role: remote_common
+    - role: Docker
+    - role: couchDB
+
+
+- hosts: dbserver[0]
+
+  roles:
+    - role: build-cluster

@@ -1,0 +1,40 @@
+
+# - name: Install dependencies
+#   tags: 'web'
+#   become: yes
+#   apt:
+#     name: ['python3', 'python3-setuptools', 'unzip']
+#     state: latest
+#     install_recommends: no
+#     update_cache: yes
+
+#- name: Download tornado.jar
+#  sudo: true
+#  get_url:
+#    url: https://github.com/downloads/facebook/tornado/tornado-2.4.1.tar.gz
+#    dest: ~/Envy
+
+
+- name: Install tornado
+  sudo: true
+  raw:
+    pip3 install tornado
+
+- name: Delete exist file
+  raw: sudo rm -rf /home/ubuntu/CCCproject2-team56
+
+- name: Download project
+  sudo: true
+  raw: git clone https://github.com/Fish-WY/CCCproject2-team56
+
+#- name: unarchive website file
+#  become: yes
+#  unarchive:
+#    src:
+#    dest: /home/ubuntu/Pride
+
+- name: Open website
+  sudo: true
+  raw:
+    cd /home/ubuntu/CCCproject2-team56/Web
+    sudo python3 app.py

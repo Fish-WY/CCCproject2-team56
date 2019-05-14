@@ -1,0 +1,6 @@
+- name: Run harvester_stream1
+  raw: 
+    cd /home/ubuntu/CCCproject2-team56/TwitterHarverster;
+    sudo nohup python3 /home/ubuntu/CCCproject2-team56/TwitterHarverster/runStream.py 0 1 > streamout.txt 2 > streamerr.txt &
+
+

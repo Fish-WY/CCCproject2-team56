@@ -1,0 +1,19 @@
+
+- name: start container
+  raw:
+    docker run -d --network host --mount type=bind,src=/data/couchdb,dst=/opt/couchdb/data  --name cb couchdb:2.3.0;
+    sleep 5;
+
+- name: Start couchDB
+  sudo: true
+  raw:
+    docker exec cb bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args";
+    docker exec cb bash -c "echo \"-name couchdb@{{ansible_default_ipv4.address}}\" >> /opt/couchdb/etc/vm.args";
+    docker restart cb;
+    sleep 10
+
+- name: Config couchDB
+  raw:
+    curl -X PUT http://127.0.0.1:5984/_node/_local/_config/admins/admin -d '"admin"';
+    curl -X PUT http://admin:admin@127.0.0.1:5984/_node/_local/_config/chttpd/bind_address -d '"0.0.0.0"';
+    curl -X POST -H "Content-Type:application/json" http://admin:admin@127.0.0.1:5984/_cluster_setup -d'{"action":"enable_cluster", "bind_address":"0.0.0.0", "username":"admin", "password":"admin", "node_count":"3"}'

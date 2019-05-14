@@ -1,0 +1,22 @@
+
+- hosts: harvester[0]
+  gather_facts: true
+
+  roles:
+    - role: remote_common
+    - role: harvester_streamAPI01
+
+- hosts: harvester[1]
+  gather_facts: true
+
+  roles:
+    - role: remote_common
+    - role: harvester_streamAPI02
+
+- hosts: harvester[2]
+  gather_facts: true
+
+  roles:
+    - role: remote_common
+    - role: harvester_searchAPI
+

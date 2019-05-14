@@ -1,0 +1,60 @@
+
+# - name: create file system
+#   sudo: true
+#   raw:
+#     sudo mkfs.ext4 /dev/vdb;
+
+# - name: Create directory to mount
+#   raw: sudo mkdir -p /data
+
+# - name: Mount device
+#   raw:
+#     sudo mount -t auto /dev/vdb /data
+
+# - name: Create directory to mount
+#   raw: sudo mkdir -p /data/couchdb
+
+- name: Install dependencies
+  tags: 'docker'
+  become: yes
+  apt:
+    name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent', 'software-properties-common' ]
+    state: latest
+    install_recommends: no
+
+
+
+- name: Copy install docker shell
+  become: true
+  copy:
+    src: ./file/docker_install.sh
+    dest: /home/ubuntu/docker_install.sh
+    mode: 0755
+
+
+
+- name: Install docker
+  raw: ./docker_install.sh
+
+- name: Create data directory
+  become: true
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+
+- name: docker proxy environment
+  become: true
+  copy:
+    src: ./file/docker_proxy.conf
+    dest: /etc/systemd/system/docker.service.d/http-proxy.conf
+    mode: 0755
+    
+- name: Flush docker changes
+  raw: sudo systemctl daemon-reload
+
+- name: Restart docker
+  raw: sudo systemctl restart docker
+
+- name: Add your user to the docker
+  raw: sudo usermod -aG docker $USER

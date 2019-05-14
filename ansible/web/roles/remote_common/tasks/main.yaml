@@ -1,0 +1,19 @@
+
+- name: Proxy_env
+  become: true
+  copy:
+    src: ./file/environment
+    dest: /etc/environment
+    mode: 0755
+
+- name: Install dependencies
+  tags: always
+  become: yes
+  apt:
+    name: [ 'python3', 'python3-setuptools', 'python3-pip']
+    state: latest
+    install_recommends: no
+
+- name: Pip
+  raw: pip3 install cloudant;
+    

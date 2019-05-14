@@ -1,0 +1,49 @@
+#common vars
+availability_zone: melbourne-qh2-uom
+
+#Volume
+volumes:
+  - vol_name: db1-vol
+    vol_size: 50
+  - vol_name: db2-vol
+    vol_size: 50
+  - vol_name: db3-vol
+    vol_size: 50
+  - vol_name: web-vol
+    vol_size: 10
+
+#security group
+security_groups:
+
+  - name: team56
+    description: "Demo security group for HTTP "
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 10000
+    remote_ip_prefix: 0.0.0.0/0
+
+#instance
+instances:
+  - instance_name: dbserver1
+    instance_image: afccf48a-9426-4618-86dc-0ceb636f0169
+    instance_key_name: yishan
+    instance_flavor: uom.mse.2c9g
+
+  - instance_name: dbserver2
+    instance_image: afccf48a-9426-4618-86dc-0ceb636f0169
+    instance_key_name: yishan
+    instance_flavor: uom.mse.2c9g
+
+  - instance_name: dbserver3
+    instance_image: afccf48a-9426-4618-86dc-0ceb636f0169
+    instance_key_name: yishan
+    instance_flavor: uom.mse.2c9g
+
+  - instance_name: webserver
+    instance_image: afccf48a-9426-4618-86dc-0ceb636f0169
+    instance_key_name: yishan
+    instance_flavor: uom.mse.2c9g
+
+
+
+
