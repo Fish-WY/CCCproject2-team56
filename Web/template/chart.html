@@ -14,7 +14,7 @@
         $(document).ready(apply());
         setInterval(update, 1000);
         var num = 0;
-        var last = 0;
+        var change = 0;
 
 
         function update() {
@@ -22,7 +22,10 @@
                 if (status == "success") {
                     //alert(data);
                     var data1 = eval("(" + data + ")");
-                    last = num;
+                    if (num ==0)
+                        change = 0;
+                    else
+                        change = data1["res"]-num;
                     num = data1["res"];
                     document.getElementById('count').textContent = num;
 
@@ -308,7 +311,7 @@
                         var series = this.series[0];
                         setInterval(function () {
                             var x = (new Date()).getTime(), // current time
-                                y = num-last;
+                                y = change;
                             series.addPoint([x, y], true, true);
                         }, 1000);
                     }
@@ -371,7 +374,7 @@
                     for (i = -19; i <= 0; i += 1) {
                         data.push({
                             x: time + i * 1000,
-                            y: num-last
+                            y: change
                         });
                     }
                     return data;
