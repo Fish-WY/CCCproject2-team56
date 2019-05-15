@@ -1,5 +1,5 @@
 # Introduction of CouchDB 
-this is twi design documnet we used in couchDB
+this is two design documnet we used in couchDB
 ## Mount volume
 [/dev/vdb] 
 ```
