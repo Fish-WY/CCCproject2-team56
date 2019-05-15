@@ -1,0 +1,558 @@
+<!--# Team 56
+# Yishan Shi 883166
+# Huiya Chen 894933
+# Tong He 867488
+# Yao Wang 869992
+# Aaron Robins 694098-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/7.1.1/highcharts.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Show Map</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        html,
+        body,
+
+        #map {
+            height: 600px;
+            width: 700px;
+            margin: 0;
+            top:22%;
+            left: 10%;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .nicebox {
+            position: absolute;
+            text-align: center;
+            font-family: "Roboto", "Arial", sans-serif;
+            font-size: 13px;
+            z-index: 5;
+            box-shadow: 0 4px 6px -4px #333;
+            padding: 5px 10px;
+            background: rgb(255, 255, 255);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(245, 245, 245, 1) 100%);
+            border: rgb(229, 229, 229) 1px solid;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+
+        #controls {
+            top: 70px;
+            left: 70px;
+            width: 360px;
+            height: 45px;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        #data-box {
+            top: 50px;
+            left: 400px;
+            height: 45px;
+            line-height: 45px;
+            display: none;
+        }
+
+        #legend {
+            display: flex;
+            display: -webkit-box;
+            padding-top: 7px
+        }
+
+        .color-key {
+            background: linear-gradient(to right,
+                hsl(5, 69%, 54%) 0%,
+                hsl(29, 71%, 51%) 17%,
+                hsl(54, 74%, 47%) 33%,
+                hsl(78, 76%, 44%) 50%,
+                hsl(102, 78%, 41%) 67%,
+                hsl(127, 81%, 37%) 83%,
+                hsl(151, 83%, 34%) 100%);
+            flex: 1;
+            -webkit-box-flex: 1;
+            margin: 0 5px;
+            text-align: left;
+            font-size: 1.0em;
+            line-height: 1.0em;
+        }
+
+        #data-value {
+            font-size: 2.0em;
+            font-weight: bold
+        }
+
+        #data-label {
+            font-size: 2.0em;
+            font-weight: normal;
+            padding-right: 10px;
+        }
+
+        #data-label:after {
+            content: ':'
+        }
+
+        #data-caret {
+            margin-left: -5px;
+            display: none;
+            font-size: 14px;
+            width: 14px
+        }
+
+        .mainbox {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .mainbox>img {
+            width: 100%;
+            height: 100%;
+            border: 0px;
+        }
+
+        .combine {
+            position:fixed;
+            left: 800px;
+            top: 80px
+        }
+
+        .bar {
+            position:fixed;
+            left: 800px;
+            top: 380px
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="mainbox">
+        <img class="img-fluid" src="/static/picture/ground.jpeg" />
+    </div>
+
+    <!--Navbar-->
+    <div class="container floor-nav">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation"
+            style="background-color: rgba(252, 252, 252, 0.2);">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Pride</a>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Home Page</a></li>
+                        <li><a href="/chart">Chart</a></li>
+                        <li><a href="/map">Map</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div id="controls" class="nicebox">
+        <div id="legend">
+            <div id="Min">min</div>
+            <div class="color-key"><span id="data-caret">&#x25c6;</span></div>
+            <div id="Max">max</div>
+        </div>
+    </div>
+    <div id="data-box" class="nicebox" style="background-color: rgba(255,255,255,0.5)">
+        <label id="data-label" for="data-value"></label>
+        <span id="data-value"></span>
+    </div>
+
+
+
+
+    <div id='map'></div>
+    <div id="bar" class="bar" style="width: 550px; height: 250px;min-font-size: 9; margin: 0 auto"></div>
+    <div id="combine" class="combine" style="width: 550px; min-height:250px;min-font-size: 9; margin: 0 auto"></div>
+
+
+    <script>
+        var mapStyle = [{
+            'stylers': [{ 'visibility': 'on' }]
+        }, {
+            'featureType': 'landscape',
+            'elementType': 'geometry',
+            'stylers': [{ 'visibility': 'on' }, { 'color': '#fcfcfc' }]
+        }, {
+            'featureType': 'water',
+            'elementType': 'geometry',
+            'stylers': [{ 'visibility': 'on' }, { 'color': '#bfd4ff' }]
+        }];
+        var map;
+        var incomeMin = Number.MAX_VALUE;
+        var incomeMax = -Number.MAX_VALUE;
+        var infoWindow;
+        function initMap() {
+            //barchart();
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -33.344, lng: 137.036 },
+                zoom: 4,
+                styles: mapStyle
+            });
+
+            map.data.setStyle(styleFeature);
+            map.data.addListener('mousedown', mouseDownRegion);
+            map.data.addListener('mouseup', mouseUpRegion);
+            map.data.addListener('mouseover', mouseInToRegion);
+            map.data.addListener('mouseout', mouseOutOfRegion);
+            map.data.addListener('click', click);
+            loadMapShapes();
+
+        }
+        function loadMapShapes() {
+            //var GeoData= linkDB.get_data('aurin','bee6b09dce9b6deaa06a7040baa7eb80')
+
+            map.data.loadGeoJson("/static/json/data.json", { idPropertyName: 'feature_name' });
+
+        }
+        function jsontest() {
+            var url = 'http://45.113.233.252:8888/Envy/person.json'
+        }
+        function handleAurinData() {
+            map.data.forEach(function (feature) {
+                var income = feature.getProperty('fi_4000_more_tot');
+                if (income > incomeMax) {
+                    incomeMax = income;
+                }
+                else if (income < incomeMin) {
+                    incomeMin = income;
+                }
+
+            });
+
+        }
+        function styleFeature(feature) {
+
+            handleAurinData();
+
+            var low = [5, 69, 54];  // color of smallest datum
+            var high = [151, 83, 34];   // color of largest datum
+            var delta = (feature.getProperty('fi_4000_more_tot') - incomeMin) /
+                (incomeMax - incomeMin);
+
+            var color = [];
+            for (var i = 0; i < 3; i++) {
+                // calculate an integer color based on the delta
+                color[i] = (high[i] - low[i]) * delta + low[i];
+            }
+
+            // determine whether to show this shape or not
+
+
+
+            var outlineWeight = 0.5, zIndex = 1;
+            if (feature.getProperty('state') === 'hover') {
+                outlineWeight = zIndex = 2;
+            }
+
+            return {
+                strokeWeight: outlineWeight,
+                strokeColor: '#fff',
+                zIndex: zIndex,
+                fillColor: 'hsl(' + color[0] + ',' + color[1] + '%,' + color[2] + '%)',
+                fillOpacity: 0.75,
+                visible: true
+            };
+        }
+        function mouseInToRegion(e) {
+            e.feature.setProperty('state', 'hover');
+            var percent = (e.feature.getProperty('fi_4000_more_tot') - incomeMin) /
+                (incomeMax - incomeMin) * 100;
+            document.getElementById('data-label').textContent =
+                e.feature.getProperty('feature_name');
+            document.getElementById('data-value').textContent =
+                e.feature.getProperty('fi_4000_more_tot').toLocaleString();
+            document.getElementById('data-box').style.display = 'block';
+            document.getElementById('data-caret').style.display = 'block';
+            document.getElementById('data-caret').style.paddingLeft = percent + '%';
+        }
+        function mouseOutOfRegion(e) {
+            e.feature.setProperty('state', 'normal');
+            document.getElementById('data-box').style.display = 'none'
+            document.getElementById('data-caret').style.display = 'none';
+        }
+
+        function mouseDownRegion(e) {
+            e.feature.setProperty('state', 'hover');
+
+        }
+        function mouseUpRegion(e) {
+            e.feature.setProperty('state', 'normal');
+        }
+
+        function click(e) {
+            var name = e.feature.getProperty('feature_name')
+            apply(e, name)
+
+
+        }
+
+        function apply(e, region) {
+
+            var bool = 0
+
+            $.post("/map", { message: region }, function (data, status) {
+                if (status == "success") {
+                    //alert(data);
+
+                    var data1 = eval("(" + data + ")")
+                    //alert(JSON.stringify(data1))
+                    var res = data1["hour"]
+                    //alert(JSON.stringify(res))
+                    var res1 = data1["brand"]
+
+                    var time = []
+                    var count = []
+                    var score = []
+
+                    if (res.length == 0)
+                        alert("No info in this area!")
+
+                    else {
+
+                        for (var i = 0; i < res.length; i++) {
+                            time[i] = res[i]["time"]
+                            count[i] = res[i]["count"]
+                            score[i] = res[i]["score"]
+                        }
+
+                        //alert(JSON.stringify(brand))
+                        //alert(JSON.stringify(score))
+
+                        //infoWindow.close();
+                        //infoWindow = new google.maps.InfoWindow;
+                        //test(e)
+
+                        combine(time,count,score,region);
+                        barchart(res1,region);
+
+                    }
+                    //barchart();
+
+                }
+                else {
+                    alert("Ajax error");
+                }
+            });
+        };
+
+
+
+
+        function combine(time,count,score,reg) {
+
+            //alert("recive")
+            var chart = {
+                zoomType: 'xy',
+                backgroundColor: 'rgba(255,255,255,0.2)'
+            };
+            var subtitle = {
+                text: reg
+            };
+            var title = {
+                text: 'Vader in different time',
+                style: {
+                    color: 'rgb(255,255,255)',
+                    fontSize: '10px'
+                }
+
+            };
+
+            var credits = {
+                enabled: false
+            };
+            var xAxis = {
+                categories: time,
+                crosshair: true,
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
+            };
+            var yAxis = [{
+                labels: {
+                    format: '{value} tweets',
+                    style: {
+                        color: Highcharts.getOptions().colors[3]
+                    }
+                },
+                title: {
+                    text: 'count',
+                    style: {
+                        color: Highcharts.getOptions().colors[3]
+                    }
+                }
+            }, {
+                title: {
+                    text: 'vader',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                labels: {
+                    format: '{value} vedar',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                opposite: true
+            }];
+            var tooltip = {
+                shared: true
+            };
+            var legend = {
+                layout: 'vertical',
+                align: 'left',
+                x: 90,
+                verticalAlign: 'top',
+                y: 10,
+                floating: true,
+                backgroundColor: 'rgba(255,255,255,0.5)'
+            };
+            var series = [{
+                name: 'count',
+                type: 'column',
+                colorByPoint: true,
+                data: count,
+                yAxis: 0,
+                tooltip: {
+                    valueSuffix: ' people'
+                }
+            }, {
+                name: 'vedar',
+                type: 'spline',
+                yAxis: 1,
+                //colorByPoint: true,
+                data: score,
+                color: Highcharts.getOptions().colors[2],
+
+            }
+            ];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.credits = credits;
+            json.tooltip = tooltip;
+            json.legend = legend;
+            json.series = series;
+            $('#combine').highcharts(json);
+
+
+        }
+
+        function barchart(res1,reg) {
+
+
+
+            brand = []
+            vader = []
+
+            for(var i=0;i<res1.length;i++){
+                brand[i] = res1[i]["brand"]
+                vader[i] = res1[i]["vader"]
+            }
+
+            //alert(JSON.stringify(brand))
+            //alert(JSON.stringify(vader))
+
+            var chart = {
+                type: 'column',
+                backgroundColor: 'rgba(255,255,255,0.2)',
+            };
+            var title = {
+                text: 'Vader of all brands in '+reg,
+                style: {
+                    color: 'rgb(255,255,255)',
+                    fontSize: '10px'
+                }
+            };
+            var subtitle = {
+                text: 'Source: tweets'
+
+            };
+            var xAxis = {
+                categories: brand,
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
+            };
+
+            var yAxis = {
+                labels: {
+	            	formatter: function () {
+                    	return this.value
+                	},
+	                style: {
+						color: 'rgb(255,255,255)',
+						fontSize:'10px',
+					}
+	            }
+            }
+            var credits = {
+                enabled: false
+            };
+
+             var legend = {
+                layout: 'vertical',
+                align: 'left',
+                x: 50,
+                verticalAlign: 'top',
+                y: 20,
+                floating: true,
+                backgroundColor: 'rgba(255,255,255,0.5)'
+            };
+
+            var series = [{
+                name: 'brand score',
+                colorByPoint: true,
+                data: vader
+            }
+            ];
+
+            var json = {};
+            json.chart = chart;
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.series = series;
+            json.credits = credits;
+            json.legend = legend;
+            $('#bar').highcharts(json);
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEryg2gOGvCcRuj1eBOCwuDfHMy8DrmCc&callback=initMap"></script>
+</body>
+
+</html>

@@ -1,19 +1,22 @@
 
 import json
 
+# load a Geojson file
 def loadGrid(filePath):
-
     gridMap = []
     twitternum={}
-    blockk={}
+    
     with open(filePath) as file:
         info = json.load(file)
+        # loop each region in the file
         for region in info["features"]:
             regionInfo = {}
             polygon = region["geometry"]
             regionInfo["bound"]=polygon["coordinates"]
+            #number of polygon
             regionInfo["count"]=len(regionInfo["bound"])
             prop=region["properties"]
+            #get the infomation of region
             regionInfo["id"] = prop["feature_code"]
             regionInfo["name"] = prop["feature_name"]
             regionInfo["money"] = prop["median_income_per_employed_aud_persons"]
@@ -27,67 +30,61 @@ def loadGrid(filePath):
     print(len(twitternum))
     #print(gridMap)
     return (gridMap,twitternum)
-   
-def isRayIntersectsSegment(poi,s_poi,e_poi): #[x,y] [lng,lat]
-    #输入：判断点，边起点，边终点，都是[lng,lat]格式数组
-    if s_poi[1]==e_poi[1]: #排除与射线平行、重合，线段首尾端点重合的情况
+
+# input: point need to be judged.
+#        start point of edge
+#        end point of edge
+#        all input are in format [lng,lat]
+def intersect(poi,start_point,end_point): 
+
+    # edge above the ray
+    if start_point[1]>poi[1] and end_point[1]>poi[1]: 
         return False
-    if s_poi[1]>poi[1] and e_poi[1]>poi[1]: #线段在射线上边
+    # edge under the ray
+    if start_point[1]<poi[1] and end_point[1]<poi[1]: 
         return False
-    if s_poi[1]<poi[1] and e_poi[1]<poi[1]: #线段在射线下边
+        
+    # exclude parallel and coincident with the ray, the end and end of the line overlap
+    if start_point[1]==end_point[1]: 
         return False
-    if s_poi[1]==poi[1] and e_poi[1]>poi[1]: #交点为下端点，对应spoint
+    # The intersection point is the lower endpoint, corresponding to spoint
+    if start_point[1]==poi[1] and end_point[1]>poi[1]: 
         return False
-    if e_poi[1]==poi[1] and s_poi[1]>poi[1]: #交点为下端点，对应epoint
+    # The intersection point is the lower endpoint, corresponding to spoint
+    if end_point[1]==poi[1] and start_point[1]>poi[1]: 
         return False
-    if s_poi[0]<poi[0] and e_poi[0]<poi[0]: #线段在射线左边
+    # edge is in the left of ray
+    if start_point[0]<poi[0] and end_point[0]<poi[0]: #线段在射线左边
+        return False
+    # find intersection
+    xseg=end_point[0]-(end_point[0]-start_point[0])*(end_point[1]-poi[1])/(end_point[1]-start_point[1]) 
+    # intersect is in the lect of ray point
+    if xseg<poi[0]: 
         return False
 
-    xseg=e_poi[0]-(e_poi[0]-s_poi[0])*(e_poi[1]-poi[1])/(e_poi[1]-s_poi[1]) #求交
-    if xseg<poi[0]: #交点在射线起点的左侧
-        return False
-    return True  #排除上述情况之后
+    return True  
 
-def isPoiWithinPoly(poi,poly):
-    #输入：点，多边形三维数组
-    #poly=[[[x1,y1],[x2,y2],……,[xn,yn],[x1,y1]],[[w1,t1],……[wk,tk]]] 三维数组
-
-    #可以先判断点是否在外包矩形内 
-    #if not isPoiWithinBox(poi,mbr=[[0,0],[180,90]]): return False
-    #但算最小外包矩形本身需要循环边，会造成开销，本处略去
-    sinsc=0 #交点个数
-    for epoly in poly: #循环每条边的曲线->each polygon 是二维数组[[x1,y1],…[xn,yn]]
-        for i in range(len(epoly[0])-1): #[0,len-1]
-            s_poi=epoly[0][i]
-            e_poi=epoly[0][i+1]
-            if isRayIntersectsSegment(poi,s_poi,e_poi):
-                sinsc+=1 #有交点就加1
-
-    return True if sinsc%2==1 else  False
+# input: point:[lng, lat]
+#        polygon: [[[lng, lat],[lng, lat],……,[lng, lat],[lng, lat]],[[lng, lat],……[lng, lat]]]
+ 
+def pointInPolygon(poi,poly):
+    
+    intersection=0 #number of  intersectiono
+    for each_polygon in poly: #loop each polygon in multiple polygons->each polygon 
+        for i in range(len(each_polygon[0])-1): #loop each edge in polygon
+            start_point=each_polygon[0][i]
+            end_point=each_polygon[0][i+1]
+            if intersect(poi,start_point,end_point):
+                intersection+=1 
+    # in the polygon if the number of intersection is odd
+    return True if intersection%2==1 else  False
 
 (grid,twitterCount)=loadGrid("data.json")
+
+
 def getRegion(position):
     for region in grid:
         name=region["name"]
-        if isPoiWithinPoly(position, region["bound"]):
+        if pointInPolygon(position, region["bound"]):
             return name
-
-
-
-if __name__ == '__main__':
-    lng=145.036
-    lat=-38.344
-
-    position=[lng,lat]
-
-    (grid,twitterCount)=loadGrid("./data.json")
-    for region in grid:
-        name=region["name"]
-        if isPoiWithinPoly(position, region["bound"]):
-            print("find it!")
-            twitterCount[name]+=1
-            break
-    print(twitterCount)
-
-
 

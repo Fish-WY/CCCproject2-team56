@@ -1,8 +1,15 @@
+# Team 56
+# Yishan Shi 883166
+# Huiya Chen 894933
+# Tong He 867488
+# Yao Wang 869992
+# Aaron Robins 694098
+
 from cloudant.client import CouchDB
 import json
 
-USERNAME = 'admin'
-PASSWORD = 'admin'
+USERNAME = 'admin56'
+PASSWORD = 'admin56'
 client = CouchDB(USERNAME,PASSWORD,url='http://172.26.38.69:5984',connect=True)
 session = client.session()
 
@@ -75,3 +82,5 @@ def total_count(dbname = 'twitter', ddocID = '_design/time' , viewID = 'count'):
             return doc["value"]
 
     return count
+
+total_count()

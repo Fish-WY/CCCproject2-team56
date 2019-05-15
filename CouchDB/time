@@ -1,0 +1,19 @@
+{
+  "_id": "_design/time",
+  "_rev": "3-481f880737a5a42bb40e81cb745a4ec7",
+  "views": {
+    "hour": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  if(doc.where[0] && doc.where[1]){\n    var hour = doc.when.split(' ')[3].split(':')[0]\n    emit([hour,doc.where[0],doc.where[1]], doc.compound);\n  }\n}"
+    },
+    "count": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  if(doc.where[0] && doc.where[1]){\n    var hour = doc.when.split(' ')[3].split(':')[0]\n    emit([hour,doc.where[0],doc.where[1]],  1);\n  }\n}"
+    },
+    "score": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  if(doc.where[0] && doc.where[1]){\n    var hour = doc.when.split(' ')[3].split(':')[0]\n    emit([hour,doc.where[0],doc.where[1]], doc.compound);\n  }\n}"
+    }
+  },
+  "language": "javascript"
+}

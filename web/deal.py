@@ -1,3 +1,10 @@
+# Team 56
+# Yishan Shi 883166
+# Huiya Chen 894933
+# Tong He 867488
+# Yao Wang 869992
+# Aaron Robins 694098
+
 import json
 import linkDB
 
@@ -45,7 +52,7 @@ regionMap = {
 
 
 def loadaurin():
-    aurindata = linkDB.get_aurindata('aurin','a914df0a1a387fa05e32061156001d3e')
+    aurindata = linkDB.get_aurindata('aurin','cd19601ff48fec927421d634e205006d')
 
     #print(aurindata)
     incomedata = []

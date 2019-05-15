@@ -1,3 +1,12 @@
+'''
+CCC2019 Team 56
+Yishan Shi 883166
+Huiya Chen 894933
+Tong He 867488
+Yao Wang 869992
+Aaron Robins 694098
+'''
+
 from pprint import pprint
 stream_api = {
     'consumer_key' : 'fxAkAR5lwg2Ruwp44iW4QlCdj',

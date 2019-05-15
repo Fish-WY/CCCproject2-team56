@@ -2,6 +2,15 @@ import time
 from TwitterAPItools import *
 import json
 from APIconfig import ausCities
+
+'''
+CCC2019 Team 56
+Yishan Shi 883166
+Huiya Chen 894933
+Tong He 867488
+Yao Wang 869992
+Aaron Robins 694098
+'''
 import sys
 
 #read by line

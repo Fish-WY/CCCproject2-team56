@@ -1,0 +1,27 @@
+{
+  "_id": "_design/car",
+  "_rev": "10-f7069f03b2cbf45c0f0e1b3f93f7472f",
+  "views": {
+    "byCity": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  if(doc.compound > 0){\n    for(index in doc.carbrands){\n      emit([doc.where[0],doc.carbrands[index]], doc.compound);\n    }\n  }\n  \n  \n}"
+    },
+    "byRegion": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  if(doc.compound > 0){\n    for(index in doc.carbrands){\n      emit([doc.where[1],doc.carbrands[index]], doc.compound);\n    }\n  }\n}"
+    },
+    "occurrenceByCity": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  for(index in doc.carbrands){\n    emit([doc.where[0],doc.carbrands[index]],1);\n  }\n}"
+    },
+    "occurrenceByPlace": {
+      "reduce": "_count",
+      "map": "function (doc) {\n  for(index in doc.carbrands){\n    emit([doc.where[1],doc.carbrands[index]],1);\n  }\n}"
+    },
+    "superCar": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  if(doc.compound > 0){\n    var supercar = ['aston Martin', 'bentley','bugatti','cadillac', 'corvette','ferrari','lamborghini', 'maserati','mclaren', 'porsche', 'rolls-royce']\n    for(index in doc.carbrands){\n      if(supercar.indexOf(doc.carbrands[index]) > 0){\n        emit([doc.where[0],doc.where[1],doc.carbrands[index]], doc.compound);\n      }\n    }\n  }\n  \n}"
+    }
+  },
+  "language": "javascript"
+}
