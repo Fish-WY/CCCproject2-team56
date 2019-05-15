@@ -4,19 +4,20 @@ start the harverster using searchAPI
 
 ```
 nohup python3 ~/CCCproject2-team56/TwitterHarverster/runSearch.py > searchout.txt &
-ps -ef | grep .py
-kill
 ```
 ## runStream.py
 start the harverster using streamAPI
 
 ```
 nohup python3 ~/CCCproject2-team56/TwitterHarverster/runStream.py 0 > stremout.txt &
+```
+## command to monitor and kill process
+```
 ps -ef | grep .py
-kill
+kill [NO]
 ```
 ## CouchDBtools.py & TwitterAPItools.py
-defined python functions for couchDB and Twitter API to be called by run.py
+defined python functions for couchDB and Twitter API to be called by run*.py
 
 ## docReader.py
 read and process downloaded historic tweets from UNIMELB cloud

@@ -3,8 +3,8 @@ import json
 from pprint import pprint
 
 # Create CouchDB client (need SSH -f in background)
-USERNAME = 'admin'
-PASSWORD = 'admin'
+USERNAME = 'admin56'
+PASSWORD = 'admin56'
 
 # http://172.26.37.222:5984/_utils/#database/history_tweet/_design/day_data_view/_view/day_view
 client = CouchDB(USERNAME, PASSWORD, url='http://localhost:5984', connect=True)
