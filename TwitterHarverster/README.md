@@ -9,7 +9,7 @@ nohup python3 ~/CCCproject2-team56/TwitterHarverster/runSearch.py > searchout.tx
 start the harverster using streamAPI
 
 ```
-nohup python3 ~/CCCproject2-team56/TwitterHarverster/runStream.py 0 > stremout.txt &
+sudo nohup python3 /home/ubuntu/CCCproject2-team56/TwitterHarverster/runStream.py 0 1 > streamout.txt 2 > streamerr.txt &
 ```
 ## command to monitor and kill process
 ```
@@ -22,7 +22,7 @@ defined python functions for couchDB and Twitter API to be called by run*.py
 ## docReader.py
 read and process downloaded historic tweets from UNIMELB cloud
 ```
-./cloudDataprocesser.sh
+./cloudDataProcesser.sh 
 # python3 docReader.py 1>/dev/null 2>error.txt &
 # nohup python3 docReader.py 1>docout.txt 2>docerror.txt &
 ```

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # (2014 2015 2016 2017 2018 2019)
-years=(2017 2018)
+years=(2018 2019)
 cities=(adelaide brisbane canberra hobart melbourne perth sydney)
 #（1 2 3 4 5 6 7 8 9 10 11 12)
 months=(1 2 3 4 5 6 7 8 9 10 11 12)
